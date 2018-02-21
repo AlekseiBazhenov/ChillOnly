@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ChillOnly</string>
+
+    <!--player-->
+    <string name="buffering">Buffering …</string>
+    <string name="connecting">Connecting …</string>
+    <string name="connection_error">Connection error</string>
+
+    <!--stations tabs-->
+    <string name="all_radio_stations">All</string>
+    <string name="recommended_stations">Recommended</string>
+    <string name="favorite_stations">Favorites</string>
+    <string name="rate_us">Rate us</string>
+    <string name="share">Share</string>
+    <string name="search_hint">Search …</string>
+
+</resources>

@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "118136258522",
+    "firebase_url": "https://chillonly-bf56a.firebaseio.com",
+    "project_id": "chillonly-bf56a",
+    "storage_bucket": "chillonly-bf56a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118136258522:android:86934181fe513602",
+        "android_client_info": {
+          "package_name": "ru.modernsoft.chillonly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "118136258522-01ji5fd30ono4nhba1ciu1md65gsmoqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{ "current_key": "AIzaSyCDP19MKFdeTD2mawmNT4R8gFnG1nEpZss" }],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
