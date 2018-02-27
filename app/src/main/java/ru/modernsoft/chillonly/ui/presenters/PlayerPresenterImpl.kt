@@ -3,7 +3,10 @@ package ru.modernsoft.chillonly.ui.presenters
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.business.events.RxEventBus
-import ru.modernsoft.chillonly.business.interactors.*
+import ru.modernsoft.chillonly.business.interactors.AddStationToFavoritesInteractor
+import ru.modernsoft.chillonly.business.interactors.AddStationToFavoritesInteractorImpl
+import ru.modernsoft.chillonly.business.interactors.GetStationByIdInteractor
+import ru.modernsoft.chillonly.business.interactors.GetStationByIdInteractorImpl
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.views.ChillPlayerView
 import rx.Subscription

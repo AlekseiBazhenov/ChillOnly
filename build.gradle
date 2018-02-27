@@ -6,6 +6,7 @@ buildscript {
     ext.retrofit = "2.2.0"
     ext.firebase = "11.8.0"
     ext.dagger = "2.10-rc2"
+    ext.moxy = "1.5.3"
 
     repositories {
         jcenter()

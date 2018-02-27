@@ -67,10 +67,10 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:$firebase"
     compile "com.google.firebase:firebase-crash:$firebase"
 
-//    compile 'com.arello-mobile:moxy:1.5.3'
-//    compile 'com.arello-mobile:moxy-android:1.5.3'
-//    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-//    kapt 'com.arello-mobile:moxy-compiler:1.5.3'
+    compile "com.arello-mobile:moxy:$moxy"
+    compile "com.arello-mobile:moxy-android:$moxy"
+    compile "com.arello-mobile:moxy-app-compat:$moxy"
+    kapt "com.arello-mobile:moxy-compiler:$moxy"
 }
 
 apply plugin: 'com.google.gms.google-services'
