@@ -63,7 +63,7 @@ class PlayerPresenterImpl(private val view: ChillPlayerView) : PlayerPresenter {
             EventTypes.PLAYER_START -> {
                 val stationId: Long = value as Long
                 getStation(stationId)
-                view.startRadioService(stationId)
+                view.startRadio(stationId)
             }
             EventTypes.PLAYER_CONNECTING -> {
                 view.showPlayer(station)

@@ -67,7 +67,7 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         }
     }
 
-    override fun startRadioService(stationId: Long) {
+    override fun startRadio(stationId: Long) {
         if (isPlaying()) {
             RadioService.stop(context)
         }

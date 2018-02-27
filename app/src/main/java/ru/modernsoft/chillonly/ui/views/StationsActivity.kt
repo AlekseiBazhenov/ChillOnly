@@ -8,11 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatActivity
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
-import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.arellomobile.mvp.presenter.ProvidePresenterTag
 import kotlinx.android.synthetic.main.activity_stations.*
 import kotlinx.android.synthetic.main.toolbar_tabs.*
 import ru.modernsoft.chillonly.R
@@ -22,7 +17,7 @@ import ru.modernsoft.chillonly.ui.presenters.StationsPresenterImpl
 
 class StationsActivity : AppCompatActivity(), StationsView {
 
-    private lateinit var presenter: StationsPresenter
+    private val presenter = StationsPresenterImpl(this)
 
     private var pagerAdapter: StationsPagerAdapter? = null
 
@@ -31,8 +26,6 @@ class StationsActivity : AppCompatActivity(), StationsView {
         setContentView(R.layout.activity_stations)
 
         setSupportActionBar(toolbar)
-
-        presenter = StationsPresenterImpl(this) // todo inject
 
         if (savedInstanceState == null) {
             progress.visibility = View.VISIBLE

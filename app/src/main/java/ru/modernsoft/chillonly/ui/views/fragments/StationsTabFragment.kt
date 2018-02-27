@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_stations_category.*
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.data.db.StationsFactory
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
+import ru.modernsoft.chillonly.ui.presenters.StationsFragmentPresenterImpl
 import ru.modernsoft.chillonly.utils.ViewUtils
 
-class StationsTabFragment : Fragment() {
+class StationsTabFragment : Fragment(), StationsFragmentView {
+
+    private val presenter = StationsFragmentPresenterImpl(this)
 
     private lateinit var adapter: StationAdapter
 
@@ -28,11 +30,10 @@ class StationsTabFragment : Fragment() {
         super.onStart()
 
         val pageNumber = arguments!!.getInt(ARGUMENT_PAGE_NUMBER)
-        val list = StationsFactory.getList(pageNumber) // TODO: в презентер
-        list?.let { showStations(it) }
+        presenter.onViewStarted(pageNumber)
     }
 
-    private fun showStations(list: OrderedRealmCollection<Station>) {
+    override fun showStations(list: OrderedRealmCollection<Station>) {
         station_list.layoutManager = if (ViewUtils.orientation(activity) == Configuration.ORIENTATION_PORTRAIT)
             LinearLayoutManager(activity)
         else

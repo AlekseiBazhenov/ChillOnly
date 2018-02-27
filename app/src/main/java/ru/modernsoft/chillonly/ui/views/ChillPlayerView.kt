@@ -3,7 +3,7 @@ package ru.modernsoft.chillonly.ui.views
 import ru.modernsoft.chillonly.data.models.Station
 
 interface ChillPlayerView {
-    fun startRadioService(stationId: Long)
+    fun startRadio(stationId: Long)
     fun showPlayer(station: Station)
     fun showBuffering()
     fun showPlayerError()

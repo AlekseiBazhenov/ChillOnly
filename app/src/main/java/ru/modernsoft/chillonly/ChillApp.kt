@@ -8,6 +8,8 @@ import timber.log.Timber.DebugTree
 
 class ChillApp : Application() {
 
+    // todo Moxy, Dagger, krealmextensions, tests, ProGuard
+
     override fun onCreate() {
         super.onCreate()
 

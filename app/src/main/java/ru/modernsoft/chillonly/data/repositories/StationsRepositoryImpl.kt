@@ -8,7 +8,6 @@ import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.data.network.ApiService
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Func1
 import rx.schedulers.Schedulers
 
 class StationsRepositoryImpl : StationsRepository {

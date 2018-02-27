@@ -16,6 +16,4 @@ open class Station(
         open var recommended: Boolean = false,
         open var boughtPlace: Boolean = false,
         open var isFav: Boolean = false
-) : RealmObject(), Serializable {
-
-}
+) : RealmObject(), Serializable
