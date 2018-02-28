@@ -23,6 +23,8 @@ import ru.modernsoft.chillonly.utils.ViewUtils
 
 class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
 
+    // todo https://github.com/Arello-Mobile/Moxy/wiki/Custom-Presenter-constuructor
+
     @InjectPresenter(type = PresenterType.GLOBAL)
     lateinit var presenter: StationsFragmentPresenterImpl
 

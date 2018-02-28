@@ -14,8 +14,8 @@ import ru.modernsoft.chillonly.ui.views.StationsActivity
 
 class ChillNotification(private val context: Service) { //todo refactoring
 
-    private var notificationManager: NotificationManager? = null
-    private var notificationBuilder: NotificationCompat.Builder? = null
+    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationBuilder: NotificationCompat.Builder
 
     fun createNotification(title: String) {
         notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -28,17 +28,17 @@ class ChillNotification(private val context: Service) { //todo refactoring
         val notificationIntent = Intent(context, StationsActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
-        notificationBuilder!!.setContentIntent(pendingIntent)
+        notificationBuilder.setContentIntent(pendingIntent)
         context.startForeground(100, buildNotification())
     }
 
     fun updateNotification(track: String) {
-        notificationBuilder!!.setContentText(track)
-        notificationManager!!.notify(100, buildNotification())
+        notificationBuilder.setContentText(track)
+        notificationManager.notify(100, buildNotification())
     }
 
     private fun buildNotification(): Notification {
-        return notificationBuilder!!.build()
+        return notificationBuilder.build()
     }
 
     fun createNotificationPush(messageBody: String?) {
@@ -48,7 +48,7 @@ class ChillNotification(private val context: Service) { //todo refactoring
                 PendingIntent.FLAG_ONE_SHOT)
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(context)
+        notificationBuilder = NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(context.resources.getString(R.string.app_name))
                 .setContentText(messageBody)
@@ -56,7 +56,7 @@ class ChillNotification(private val context: Service) { //todo refactoring
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }

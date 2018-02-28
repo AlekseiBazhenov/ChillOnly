@@ -36,6 +36,8 @@ class StationsActivity : MvpAppCompatActivity(), StationsView {
         setContentView(R.layout.activity_stations)
 
         setSupportActionBar(toolbar)
+
+        chill_player_view.init(mvpDelegate);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

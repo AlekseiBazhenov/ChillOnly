@@ -10,53 +10,66 @@ import kotlinx.android.synthetic.main.player_layout.view.*
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.business.services.RadioService
 import ru.modernsoft.chillonly.data.models.Station
-import ru.modernsoft.chillonly.ui.presenters.PlayerPresenter
 import ru.modernsoft.chillonly.ui.presenters.PlayerPresenterImpl
 import ru.modernsoft.chillonly.utils.ServiceUtils
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.MvpDelegate
 
 class ChillPlayer : CoordinatorLayout, ChillPlayerView {
 
-//    private val BUNDLE_STATE = "BUNDLE_STATE"
-//    private val BUNDLE_TRACK = "BUNDLE_TRACK"
-//    private val BUNDLE_STATION_ID = "BUNDLE_STATION_ID"
+    private lateinit var mParentDelegate: MvpDelegate<Any>
+    private var mMvpDelegate: MvpDelegate<ChillPlayer>? = null
 
-    private lateinit var presenter: PlayerPresenter
+    @InjectPresenter
+    lateinit var presenter: PlayerPresenterImpl
 
     private lateinit var playerBehavior: BottomSheetBehavior<View>
 
     constructor(context: Context?) : super(context) {
-        init()
+        initViews()
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        init()
+        initViews()
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init()
+        initViews()
     }
 
-    private fun init() {
+    fun init(parentDelegate: MvpDelegate<Any>) {
+        mParentDelegate = parentDelegate
+
+        getMvpDelegate().onCreate()
+        getMvpDelegate().onAttach()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        getMvpDelegate().onSaveInstanceState()
+        getMvpDelegate().onDetach()
+    }
+
+    private fun getMvpDelegate(): MvpDelegate<ChillPlayer> {
+        if (mMvpDelegate != null) {
+            return mMvpDelegate as MvpDelegate<ChillPlayer>
+        }
+
+        mMvpDelegate = MvpDelegate(this)
+        mMvpDelegate!!.setParentDelegate(mParentDelegate, id.toString())
+        return mMvpDelegate as MvpDelegate<ChillPlayer>
+    }
+
+    private fun initViews() {
         inflate(context, R.layout.player_layout, this)
 
         playerBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet))
         playerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        presenter = PlayerPresenterImpl(this)
-
         player_layout.setOnClickListener({ openDetails() })
         control_button.setOnClickListener({ presenter.onChangePlayerStateClick() })
         add_to_fav.setOnClickListener({ presenter.onAddFavoriteClick() })
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        presenter.onViewStarted()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        presenter.onViewStopped()
     }
 
     override fun changeState(stationId: Long) {
@@ -73,7 +86,6 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         }
         RadioService.start(context, stationId)
     }
-
 
     override fun showPlayer(station: Station) {
         control_button.show()
@@ -101,39 +113,9 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         track_name.text = track
     }
 
-    // todo save presenter. moxy
-//    override fun onSaveInstanceState(): Parcelable? {
-//        val bundle = Bundle()
-//        bundle.putParcelable(BUNDLE_STATE, super.onSaveInstanceState())
-//        bundle.putString(BUNDLE_TRACK, track)
-//        if (isPlaying()) {
-//            bundle.putLong(BUNDLE_STATION_ID, station.id)
-//        }
-//        return bundle
-//    }
-//
-//    override fun onRestoreInstanceState(state: Parcelable) {
-//        var stateCopy: Parcelable? = null
-//        if (state is Bundle) {
-//            if (isPlaying()) {
-//                track = state.getString(BUNDLE_TRACK)
-//                track_name.text = track
-//                getStation(state.getLong(BUNDLE_STATION_ID))
-//                station_title.text = station.title
-//                control_button.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_pause_black_48dp))
-//            } else {
-//                changeState()
-//            }
-//            stateCopy = state.getParcelable(BUNDLE_STATE)
-//        }
-//        super.onRestoreInstanceState(if (stateCopy != null) stateCopy else state)
-//    }
-
-
     private fun isPlaying(): Boolean {
         return ServiceUtils.serviceIsRunning(context, RadioService::class.java)
     }
-
 
     private fun openDetails() {
         // DetailsActivity?
