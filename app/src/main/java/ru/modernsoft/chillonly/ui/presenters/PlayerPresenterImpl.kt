@@ -1,9 +1,14 @@
 package ru.modernsoft.chillonly.ui.presenters
 
+import com.arellomobile.mvp.InjectViewState
+import com.arellomobile.mvp.MvpPresenter
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.business.events.RxEventBus
-import ru.modernsoft.chillonly.business.interactors.*
+import ru.modernsoft.chillonly.business.interactors.AddStationToFavoritesInteractor
+import ru.modernsoft.chillonly.business.interactors.AddStationToFavoritesInteractorImpl
+import ru.modernsoft.chillonly.business.interactors.GetStationByIdInteractor
+import ru.modernsoft.chillonly.business.interactors.GetStationByIdInteractorImpl
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.views.ChillPlayerView
 import rx.Subscription
@@ -12,7 +17,8 @@ import rx.functions.Action1
 import timber.log.Timber
 import java.util.*
 
-class PlayerPresenterImpl(private val view: ChillPlayerView) : PlayerPresenter {
+@InjectViewState
+class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
 
     private var getStationInteractor: GetStationByIdInteractor = GetStationByIdInteractorImpl()
     private var addToFavoritesInteractor: AddStationToFavoritesInteractor = AddStationToFavoritesInteractorImpl()
@@ -22,14 +28,14 @@ class PlayerPresenterImpl(private val view: ChillPlayerView) : PlayerPresenter {
 
     private lateinit var station: Station
 
-    override fun onViewStarted() {
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
         subscribeOnPlayerStates()
     }
 
-    override fun onViewStopped() {
-        if (!playerStatesSubscription.isUnsubscribed) {
-            playerStatesSubscription.unsubscribe()
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        playerStatesSubscription.unsubscribe()
     }
 
     override fun onAddFavoriteClick() {
@@ -37,7 +43,7 @@ class PlayerPresenterImpl(private val view: ChillPlayerView) : PlayerPresenter {
     }
 
     override fun onChangePlayerStateClick() {
-        view.changeState(station.id)
+        viewState.changeState(station.id)
     }
 
     private fun subscribeOnPlayerStates() {
@@ -63,23 +69,23 @@ class PlayerPresenterImpl(private val view: ChillPlayerView) : PlayerPresenter {
             EventTypes.PLAYER_START -> {
                 val stationId: Long = value as Long
                 getStation(stationId)
-                view.startRadio(stationId)
+                viewState.startRadio(stationId)
             }
             EventTypes.PLAYER_CONNECTING -> {
-                view.showPlayer(station)
+                viewState.showPlayer(station)
             }
             EventTypes.PLAYER_BUFFERING -> {
-                view.showBuffering()
+                viewState.showBuffering()
             }
             EventTypes.PLAYER_ERROR -> {
-                view.showPlayerError()
+                viewState.showPlayerError()
             }
             EventTypes.PLAYER_STOP -> {
-                view.showStop()
+                viewState.showStop()
             }
             EventTypes.TRACK_CHANGED -> {
                 val track = value as String
-                view.showTrack(track)
+                viewState.showTrack(track)
             }
             EventTypes.PLAYER_PREPARED -> {
             }

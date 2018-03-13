@@ -3,21 +3,31 @@ package ru.modernsoft.chillonly.ui.views
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.arellomobile.mvp.MvpAppCompatActivity
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.PresenterType
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.arellomobile.mvp.presenter.ProvidePresenterTag
 import kotlinx.android.synthetic.main.activity_stations.*
 import kotlinx.android.synthetic.main.toolbar_tabs.*
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.ui.adapters.StationsPagerAdapter
-import ru.modernsoft.chillonly.ui.presenters.StationsPresenter
 import ru.modernsoft.chillonly.ui.presenters.StationsPresenterImpl
 
-class StationsActivity : AppCompatActivity(), StationsView {
+class StationsActivity : MvpAppCompatActivity(), StationsView {
 
-    private val presenter = StationsPresenterImpl(this)
+    @InjectPresenter(type = PresenterType.GLOBAL)
+    lateinit var presenter: StationsPresenterImpl
+
+    @ProvidePresenterTag(presenterClass = StationsPresenterImpl::class, type = PresenterType.GLOBAL)
+    fun providePresenterTag(): String = javaClass.simpleName
+
+    @ProvidePresenter(type = PresenterType.GLOBAL)
+    fun providePresenter() = StationsPresenterImpl()
 
     private var pagerAdapter: StationsPagerAdapter? = null
 
@@ -27,17 +37,7 @@ class StationsActivity : AppCompatActivity(), StationsView {
 
         setSupportActionBar(toolbar)
 
-        if (savedInstanceState == null) {
-            progress.visibility = View.VISIBLE
-            presenter.onViewStarted()
-        } else {
-            showStations()
-        }
-    }
-
-    public override fun onStop() {
-        presenter.onViewStopped()
-        super.onStop()
+        chill_player_view.init(mvpDelegate);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

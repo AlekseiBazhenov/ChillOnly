@@ -8,6 +8,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.arellomobile.mvp.MvpAppCompatFragment
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.PresenterType
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.arellomobile.mvp.presenter.ProvidePresenterTag
 import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_stations_category.*
 import ru.modernsoft.chillonly.R
@@ -16,9 +21,18 @@ import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 import ru.modernsoft.chillonly.ui.presenters.StationsFragmentPresenterImpl
 import ru.modernsoft.chillonly.utils.ViewUtils
 
-class StationsTabFragment : Fragment(), StationsFragmentView {
+class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
 
-    private val presenter = StationsFragmentPresenterImpl(this)
+    // todo https://github.com/Arello-Mobile/Moxy/wiki/Custom-Presenter-constuructor
+
+    @InjectPresenter(type = PresenterType.GLOBAL)
+    lateinit var presenter: StationsFragmentPresenterImpl
+
+    @ProvidePresenterTag(presenterClass = StationsFragmentPresenterImpl::class, type = PresenterType.GLOBAL)
+    fun providePresenterTag(): String = "${javaClass.simpleName}${hashCode()}"
+
+    @ProvidePresenter(type = PresenterType.GLOBAL)
+    fun providePresenter() = StationsFragmentPresenterImpl()
 
     private lateinit var adapter: StationAdapter
 
