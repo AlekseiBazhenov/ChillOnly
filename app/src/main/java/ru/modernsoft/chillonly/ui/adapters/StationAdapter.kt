@@ -13,6 +13,9 @@ import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.data.models.Station
+import com.bumptech.glide.request.RequestOptions
+
+
 
 class StationAdapter(private val stations: OrderedRealmCollection<Station>)
     : RealmRecyclerViewAdapter<Station, StationAdapter.ViewHolder>(stations, true) {
@@ -42,11 +45,14 @@ class StationAdapter(private val stations: OrderedRealmCollection<Station>)
                 itemView.location.text = location
                 itemView.station_layout.setOnClickListener { EventSender().send(EventTypes.PLAYER_START, id) }
 
+                val requestOptions = RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .skipMemoryCache(false)
+                        .centerCrop()
+
                 Glide.with(itemView.context)
                         .load(image)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .centerCrop()
-                        .crossFade()
+                        .apply(requestOptions)
                         .into(itemView.logo)
             }
         }

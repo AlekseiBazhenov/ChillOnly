@@ -24,7 +24,6 @@ class ChillApp : Application() {
         Realm.setDefaultConfiguration(config)
 
         //        leakCanary();
-        //        stetho();
     }
 
     //    private void leakCanary() {
@@ -32,13 +31,5 @@ class ChillApp : Application() {
     //            return;
     //        }
     //        LeakCanary.install(this);
-    //    }
-    //
-    //    private void stetho() {
-    //        Stetho.InitializerBuilder initializerBuilder = Stetho.newInitializerBuilder(this);
-    //        initializerBuilder.enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this));
-    //        initializerBuilder.enableDumpapp(Stetho.defaultDumperPluginsProvider(this));
-    //        Stetho.Initializer initializer = initializerBuilder.build();
-    //        Stetho.initialize(initializer);
     //    }
 }

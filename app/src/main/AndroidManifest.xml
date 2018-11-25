@@ -46,24 +46,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <service
-            android:name=".business.services.ChillOnlyMessagingService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <service
-            android:name=".business.services.ChillOnlyInstanceIDService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
     </application>
 
 </manifest>
