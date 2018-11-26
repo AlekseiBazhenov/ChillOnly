@@ -1,9 +1,9 @@
 package ru.modernsoft.chillonly.ui.views
 
 import android.content.Context
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import kotlinx.android.synthetic.main.player_layout.view.*

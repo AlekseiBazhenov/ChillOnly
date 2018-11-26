@@ -1,7 +1,7 @@
 package ru.modernsoft.chillonly.utils
 
 import android.content.res.Configuration
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 
 object ViewUtils {
 
