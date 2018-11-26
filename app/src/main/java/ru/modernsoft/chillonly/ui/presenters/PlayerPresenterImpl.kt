@@ -5,10 +5,10 @@ import com.arellomobile.mvp.MvpPresenter
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.business.events.RxEventBus
-import ru.modernsoft.chillonly.business.interactors.AddStationToFavoritesInteractor
-import ru.modernsoft.chillonly.business.interactors.AddStationToFavoritesInteractorImpl
-import ru.modernsoft.chillonly.business.interactors.GetStationByIdInteractor
-import ru.modernsoft.chillonly.business.interactors.GetStationByIdInteractorImpl
+import ru.modernsoft.chillonly.business.use_cases.AddStationToFavoritesUseCase
+import ru.modernsoft.chillonly.business.use_cases.AddStationToFavoritesUseCaseImpl
+import ru.modernsoft.chillonly.business.use_cases.GetStationByIdUseCase
+import ru.modernsoft.chillonly.business.use_cases.GetStationByIdUseCaseImpl
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.views.ChillPlayerView
 import rx.Subscription
@@ -20,8 +20,8 @@ import java.util.*
 @InjectViewState
 class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
 
-    private var getStationInteractor: GetStationByIdInteractor = GetStationByIdInteractorImpl()
-    private var addToFavoritesInteractor: AddStationToFavoritesInteractor = AddStationToFavoritesInteractorImpl()
+    private var getStationUseCase: GetStationByIdUseCase = GetStationByIdUseCaseImpl()
+    private var addToFavoritesUseCase: AddStationToFavoritesUseCase = AddStationToFavoritesUseCaseImpl()
 
     private lateinit var playerStatesSubscription: Subscription
     private var playerStatesSubscriber: Action1<HashMap<String, Any>>? = null
@@ -39,7 +39,7 @@ class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
     }
 
     override fun onAddFavoriteClick() {
-        addToFavoritesInteractor.addToFavorite(station)
+        addToFavoritesUseCase.addToFavorite(station)
     }
 
     override fun onChangePlayerStateClick() {
@@ -95,6 +95,6 @@ class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
     }
 
     private fun getStation(id: Long) {
-        station = getStationInteractor.getStation(id)
+        station = getStationUseCase.getStation(id)
     }
 }

@@ -1,9 +1,9 @@
-package ru.modernsoft.chillonly.business.interactors
+package ru.modernsoft.chillonly.business.use_cases
 
 import ru.modernsoft.chillonly.data.models.Station
 import rx.Observable
 
-interface GetStationsInteractor {
+interface LoadStationsUseCase {
 
     fun loadStations(): Observable<List<Station>>
 }

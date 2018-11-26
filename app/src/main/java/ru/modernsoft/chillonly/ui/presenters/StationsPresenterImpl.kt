@@ -2,8 +2,8 @@ package ru.modernsoft.chillonly.ui.presenters
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import ru.modernsoft.chillonly.business.interactors.GetStationsInteractor
-import ru.modernsoft.chillonly.business.interactors.GetStationsInteractorImpl
+import ru.modernsoft.chillonly.business.use_cases.LoadStationsUseCase
+import ru.modernsoft.chillonly.business.use_cases.LoadStationsUseCaseImpl
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.views.StationsView
 import rx.Subscriber
@@ -11,12 +11,12 @@ import rx.Subscriber
 @InjectViewState
 class StationsPresenterImpl : MvpPresenter<StationsView>(), StationsPresenter {
 
-    private var interactor: GetStationsInteractor = GetStationsInteractorImpl()
+    private var useCase: LoadStationsUseCase = LoadStationsUseCaseImpl()
     private lateinit var subscriber: Subscriber<List<Station>>
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        interactor.loadStations().subscribe(createSubscriber())
+        useCase.loadStations().subscribe(createSubscriber())
     }
 
     override fun onDestroy() {

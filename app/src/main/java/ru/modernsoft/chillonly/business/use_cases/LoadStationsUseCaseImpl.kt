@@ -1,10 +1,10 @@
-package ru.modernsoft.chillonly.business.interactors
+package ru.modernsoft.chillonly.business.use_cases
 
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.data.repositories.StationsRepositoryImpl
 import rx.Observable
 
-class GetStationsInteractorImpl : GetStationsInteractor {
+class LoadStationsUseCaseImpl : LoadStationsUseCase {
 
     private val repo = StationsRepositoryImpl()
 
