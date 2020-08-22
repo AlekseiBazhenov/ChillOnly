@@ -7,27 +7,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatActivity
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
-import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.arellomobile.mvp.presenter.ProvidePresenterTag
 import kotlinx.android.synthetic.main.activity_stations.*
 import kotlinx.android.synthetic.main.toolbar_tabs.*
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.ui.adapters.StationsPagerAdapter
 import ru.modernsoft.chillonly.ui.presenters.StationsPresenterImpl
 
 class StationsActivity : MvpAppCompatActivity(), StationsView {
 
-    @InjectPresenter(type = PresenterType.GLOBAL)
-    lateinit var presenter: StationsPresenterImpl
-
-    @ProvidePresenterTag(presenterClass = StationsPresenterImpl::class, type = PresenterType.GLOBAL)
-    fun providePresenterTag(): String = javaClass.simpleName
-
-    @ProvidePresenter(type = PresenterType.GLOBAL)
-    fun providePresenter() = StationsPresenterImpl()
+    private val presenter by moxyPresenter { StationsPresenterImpl() }
 
     private var pagerAdapter: StationsPagerAdapter? = null
 
@@ -37,7 +27,7 @@ class StationsActivity : MvpAppCompatActivity(), StationsView {
 
         setSupportActionBar(toolbar)
 
-        chill_player_view.init(mvpDelegate);
+        chill_player_view.init(mvpDelegate)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

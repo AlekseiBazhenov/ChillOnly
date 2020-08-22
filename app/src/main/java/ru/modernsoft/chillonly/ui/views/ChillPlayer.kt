@@ -1,19 +1,19 @@
 package ru.modernsoft.chillonly.ui.views
 
 import android.content.Context
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.player_layout.view.*
+import moxy.MvpDelegate
+import moxy.presenter.InjectPresenter
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.business.services.RadioService
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.presenters.PlayerPresenterImpl
 import ru.modernsoft.chillonly.utils.ServiceUtils
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.MvpDelegate
 
 class ChillPlayer : CoordinatorLayout, ChillPlayerView {
 
@@ -67,9 +67,9 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         playerBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet))
         playerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        player_layout.setOnClickListener({ openDetails() })
-        control_button.setOnClickListener({ presenter.onChangePlayerStateClick() })
-        add_to_fav.setOnClickListener({ presenter.onAddFavoriteClick() })
+        player_layout.setOnClickListener { openDetails() }
+        control_button.setOnClickListener { presenter.onChangePlayerStateClick() }
+        add_to_fav.setOnClickListener { presenter.onAddFavoriteClick() }
     }
 
     override fun changeState(stationId: Long) {

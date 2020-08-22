@@ -55,7 +55,7 @@ internal class StreamParser {
                 val headerList = headers["icy-metaint"]
                 if (headerList != null) {
                     if (headerList.size > 0) {
-                        metaDataOffset = Integer.parseInt(headers["icy-metaint"]?.get(0))
+                        metaDataOffset = Integer.parseInt(headers["icy-metaint"]?.get(0)!!)
                     } else {
                         return null
                     }

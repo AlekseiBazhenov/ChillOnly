@@ -2,37 +2,32 @@ package ru.modernsoft.chillonly.ui.views.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
-import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.arellomobile.mvp.presenter.ProvidePresenterTag
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_stations_category.*
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 import ru.modernsoft.chillonly.ui.presenters.StationsFragmentPresenterImpl
 import ru.modernsoft.chillonly.utils.ViewUtils
+import javax.inject.Inject
+import javax.inject.Provider
 
 class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
 
     // todo https://github.com/Arello-Mobile/Moxy/wiki/Custom-Presenter-constuructor
 
-    @InjectPresenter(type = PresenterType.GLOBAL)
-    lateinit var presenter: StationsFragmentPresenterImpl
+    @Inject
+    lateinit var presenterProvider: Provider<StationsFragmentPresenterImpl>
 
-    @ProvidePresenterTag(presenterClass = StationsFragmentPresenterImpl::class, type = PresenterType.GLOBAL)
-    fun providePresenterTag(): String = "${javaClass.simpleName}${hashCode()}"
-
-    @ProvidePresenter(type = PresenterType.GLOBAL)
-    fun providePresenter() = StationsFragmentPresenterImpl()
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     private lateinit var adapter: StationAdapter
 
