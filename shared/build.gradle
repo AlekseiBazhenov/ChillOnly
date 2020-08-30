@@ -1,0 +1,48 @@
+apply plugin: 'kotlin-multiplatform'
+
+kotlin {
+    targets {
+        fromPreset(presets.jvm, 'android')
+
+
+        final def iOSIsRealDevice = System.getenv('SDK_NAME')?.startsWith("iphoneos")
+        final def iOSTarget = iOSIsRealDevice ? presets.iosArm64 : presets.iosX64
+
+        fromPreset(iOSTarget, 'ios') {
+            binaries { framework('shared') }
+        }
+    }
+    sourceSets {
+        commonMain.dependencies {
+            implementation "org.jetbrains.kotlin:kotlin-stdlib-common:1.4.0"
+        }
+        androidMain.dependencies {
+            implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.0"
+        }
+        iosMain.dependencies {
+            implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.0"
+        }
+    }
+}
+
+task packForXCode(type: Sync) {
+
+    final File frameworkDir = new File(buildDir, "xcode-frameworks")
+    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+    final def framework = kotlin.targets.ios.binaries.getFramework("shared", mode)
+
+    inputs.property "mode", mode
+    dependsOn framework.linkTask
+
+    from { framework.outputFile.parentFile }
+    into frameworkDir
+
+    doLast {
+        new File(frameworkDir, 'gradlew').with {
+            text = "#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n"
+            setExecutable(true)
+        }
+    }
+}
+
+tasks.build.dependsOn packForXCode

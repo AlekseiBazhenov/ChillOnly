@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_stations.*
 import kotlinx.android.synthetic.main.toolbar_tabs.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import ru.chillonly.shared.MyClass
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.ui.adapters.StationsPagerAdapter
 import ru.modernsoft.chillonly.ui.presenters.StationsPresenterImpl
