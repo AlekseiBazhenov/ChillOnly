@@ -17,21 +17,18 @@ import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 import ru.modernsoft.chillonly.ui.presenters.StationsFragmentPresenterImpl
 import ru.modernsoft.chillonly.utils.ViewUtils
-import javax.inject.Inject
-import javax.inject.Provider
 
 class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
 
-    // todo https://github.com/Arello-Mobile/Moxy/wiki/Custom-Presenter-constuructor
-
-    @Inject
-    lateinit var presenterProvider: Provider<StationsFragmentPresenterImpl>
-
-    private val presenter by moxyPresenter { presenterProvider.get() }
+    private val presenter by moxyPresenter { StationsFragmentPresenterImpl() }
 
     private lateinit var adapter: StationAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_stations_category, container, false)
     }
 
@@ -43,10 +40,11 @@ class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
     }
 
     override fun showStations(list: OrderedRealmCollection<Station>) {
-        station_list.layoutManager = if (ViewUtils.orientation(activity) == Configuration.ORIENTATION_PORTRAIT)
-            LinearLayoutManager(activity)
-        else
-            GridLayoutManager(activity, 2)
+        station_list.layoutManager =
+            if (ViewUtils.orientation(activity) == Configuration.ORIENTATION_PORTRAIT)
+                LinearLayoutManager(activity)
+            else
+                GridLayoutManager(activity, 2)
 
         adapter = StationAdapter(list)
         station_list.adapter = adapter

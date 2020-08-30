@@ -12,10 +12,10 @@ object ApiService {
     private var api: ApiEndpoints? = null
 
     fun getApi(): ApiEndpoints {
-        if (api == null)
-            return createApi()
+        return if (api == null)
+            createApi()
         else
-            return api as ApiEndpoints
+            api as ApiEndpoints
     }
 
     private fun createApi(): ApiEndpoints {
@@ -26,15 +26,16 @@ object ApiService {
             HttpLoggingInterceptor.Level.NONE
 
         val client = OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .build()
+            .addInterceptor(BasicAuthInterceptor("mobile", "passmob123"))
+            .addInterceptor(interceptor)
+            .build()
 
         val retrofit = Retrofit.Builder()
-                .baseUrl(ApiConstants.BASE_URL)
-                .client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(ApiConstants.BASE_URL)
+            .client(client)
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
         api = retrofit.create(ApiEndpoints::class.java)
         return api as ApiEndpoints
