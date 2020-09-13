@@ -1,15 +1,18 @@
 package ru.modernsoft.chillonly.business.player
 
 import android.app.Service
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.Uri
+import android.os.Build
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import java.io.IOException
 
-class ChillMediaPlayer private constructor (private val context: Service) // todo inject Context
-    : MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnBufferingUpdateListener {
+
+class ChillMediaPlayer private constructor(private val context: Service) // todo inject Context
+    : MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
+    MediaPlayer.OnBufferingUpdateListener {
 
     companion object {
 
@@ -47,7 +50,19 @@ class ChillMediaPlayer private constructor (private val context: Service) // tod
     fun initMediaPlayer() {
         mediaPlayer = MediaPlayer()
         try {
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            mediaPlayer.apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                            .build()
+                    )
+                } else {
+                    setAudioStreamType(AudioManager.STREAM_MUSIC)
+                }
+            }
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
@@ -69,7 +84,7 @@ class ChillMediaPlayer private constructor (private val context: Service) // tod
         updateUI(EventTypes.PLAYER_CONNECTING)
 
         try {
-            mediaPlayer.setDataSource(context, Uri.parse(url))
+            mediaPlayer.setDataSource(url)
             mediaPlayer.prepareAsync()
             updateUI(EventTypes.PLAYER_BUFFERING)
         } catch (e: IllegalStateException) {

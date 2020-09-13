@@ -1,14 +1,8 @@
 package ru.modernsoft.chillonly.ui.views
 
-import moxy.MvpView
-import moxy.viewstate.strategy.AddToEndSingleStrategy
-import moxy.viewstate.strategy.SkipStrategy
-import moxy.viewstate.strategy.StateStrategyType
-import ru.modernsoft.chillonly.data.models.Station
+import commonMain.kotlin.ru.chillonly.shared.network.response.Station
 
-@StateStrategyType(AddToEndSingleStrategy::class)
-interface ChillPlayerView : MvpView {
-    @StateStrategyType(SkipStrategy::class)
+interface ChillPlayerView {
     fun startRadio(stationId: Long)
     fun showPlayer(station: Station)
     fun showBuffering()

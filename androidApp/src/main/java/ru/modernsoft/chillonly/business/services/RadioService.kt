@@ -4,12 +4,16 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.chillonly.shared.GetStationsUseCase
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.business.events.RxEventBus
 import ru.modernsoft.chillonly.business.player.ChillMediaPlayer
 import ru.modernsoft.chillonly.business.player.TrackUpdater
-import ru.modernsoft.chillonly.data.repositories.StationsRepositoryImpl
 import ru.modernsoft.chillonly.ui.ChillNotification
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -44,14 +48,21 @@ class RadioService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         stationId = getExtraStationId(intent)
-        val station = StationsRepositoryImpl().getStationById(stationId)
-        playerUrl = station.playerUrl
-        chillNotification.createNotification(station.title)
 
-        mediaPlayer.stopPlayerIfPlaying()
-        mediaPlayer.startPlayer(station.playerUrl)
+        GlobalScope.apply {
+            launch(Dispatchers.Default) {
+                val station = GetStationsUseCase.CaseProvider.getCase().getStationById(stationId)
+                withContext(Dispatchers.Main){
+                    playerUrl = station.player_url
+                    chillNotification.createNotification(station.title)
 
-        return Service.START_REDELIVER_INTENT
+                    mediaPlayer.stopPlayerIfPlaying()
+                    mediaPlayer.startPlayer(station.player_url)
+                }
+            }
+        }
+
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {

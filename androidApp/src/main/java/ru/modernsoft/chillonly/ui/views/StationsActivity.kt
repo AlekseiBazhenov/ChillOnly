@@ -5,30 +5,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_stations.*
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.toolbar_tabs.*
-import moxy.MvpAppCompatActivity
-import moxy.ktx.moxyPresenter
-import ru.chillonly.shared.MyClass
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.ui.adapters.StationsPagerAdapter
-import ru.modernsoft.chillonly.ui.presenters.StationsPresenterImpl
+import ru.modernsoft.chillonly.ui.views.fragments.StationsListFragment
 
-class StationsActivity : MvpAppCompatActivity(), StationsView {
-
-    private val presenter by moxyPresenter { StationsPresenterImpl() }
-
-    private var pagerAdapter: StationsPagerAdapter? = null
+class StationsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stations)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar) // todo delete
 
-        chill_player_view.init(mvpDelegate)
+        val fragment = StationsListFragment.create()
+        supportFragmentManager.beginTransaction().add(R.id.container, fragment).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -38,24 +29,10 @@ class StationsActivity : MvpAppCompatActivity(), StationsView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-//            R.id.search -> showSearchScreen()
             R.id.rate -> launchMarket()
             R.id.share -> share()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun showStations() {
-        if (pagerAdapter == null) {
-            pagerAdapter = StationsPagerAdapter(supportFragmentManager, this)
-        }
-        progress.visibility = View.GONE
-        viewpager.adapter = pagerAdapter
-        tabs.setupWithViewPager(viewpager)
-    }
-
-    override fun showError(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     private fun showSearchScreen() {
@@ -63,15 +40,15 @@ class StationsActivity : MvpAppCompatActivity(), StationsView {
     }
 
     private fun launchMarket() {
-        val url = Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)
+        val url = Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
         startActivity(Intent(Intent.ACTION_VIEW, url))
     }
 
     private fun share() {
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
-        val url = "http://play.google.com/store/apps/details?id=" + packageName
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Join ChillOnly " + url)
+        val url = "http://play.google.com/store/apps/details?id=$packageName"
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Join ChillOnly $url")
         sendIntent.type = "text/plain"
         startActivity(sendIntent)
     }

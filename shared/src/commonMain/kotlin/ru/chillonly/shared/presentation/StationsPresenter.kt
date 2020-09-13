@@ -1,8 +1,11 @@
-package ru.chillonly.shared
+package commonMain.kotlin.ru.chillonly.shared.presentation
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.chillonly.shared.Background
+import ru.chillonly.shared.GetStationsUseCase
+import ru.chillonly.shared.Main
 
 class StationsPresenter(private val view: StationsView) {
 
@@ -13,7 +16,7 @@ class StationsPresenter(private val view: StationsView) {
             launch(Background) {
                 val json = case.getStations()
                 withContext(Main){
-                    view.showState(StationsState(json[0].title))
+                    view.showState(StationsState(json))
                 }
             }
         }

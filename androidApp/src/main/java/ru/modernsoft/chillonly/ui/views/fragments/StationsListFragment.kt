@@ -8,21 +8,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.realm.OrderedRealmCollection
 import kotlinx.android.synthetic.main.fragment_stations_category.*
-import moxy.MvpAppCompatFragment
-import moxy.ktx.moxyPresenter
+import commonMain.kotlin.ru.chillonly.shared.network.response.Station
+import commonMain.kotlin.ru.chillonly.shared.presentation.StationsPresenter
+import commonMain.kotlin.ru.chillonly.shared.presentation.StationsState
+import commonMain.kotlin.ru.chillonly.shared.presentation.StationsView
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.data.models.Station
-import ru.modernsoft.chillonly.ui.adapters.StationAdapter
-import ru.modernsoft.chillonly.ui.presenters.StationsFragmentPresenterImpl
+import ru.modernsoft.chillonly.ui.adapters.StationAdapterNew
 import ru.modernsoft.chillonly.utils.ViewUtils
+import java.io.Serializable
 
-class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
+class StationsTabFragmentNew : Fragment(), StationsView {
 
-    private val presenter by moxyPresenter { StationsFragmentPresenterImpl() }
+    private lateinit var presenter: StationsPresenter
 
-    private lateinit var adapter: StationAdapter
+    private lateinit var adapter: StationAdapterNew
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,32 +34,24 @@ class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
 
     override fun onStart() {
         super.onStart()
-
-        val pageNumber = arguments!!.getInt(ARGUMENT_PAGE_NUMBER)
-        presenter.onViewStarted(pageNumber)
+        presenter = StationsPresenter(this)
+        presenter.start()
     }
 
-    override fun showStations(list: OrderedRealmCollection<Station>) {
+    override fun showState(state: StationsState) {
         station_list.layoutManager =
             if (ViewUtils.orientation(activity) == Configuration.ORIENTATION_PORTRAIT)
                 LinearLayoutManager(activity)
             else
                 GridLayoutManager(activity, 2)
 
-        adapter = StationAdapter(list)
+        adapter = StationAdapterNew(state.data)
         station_list.adapter = adapter
     }
 
     companion object {
-
-        private const val ARGUMENT_PAGE_NUMBER = "ARGUMENT_PAGE_NUMBER"
-
-        fun create(page: Int): Fragment {
-            val fragment = StationsTabFragment()
-            val arguments = Bundle()
-            arguments.putInt(ARGUMENT_PAGE_NUMBER, page)
-            fragment.arguments = arguments
-            return fragment
+        fun create(): Fragment {
+            return StationsTabFragmentNew()
         }
     }
 }

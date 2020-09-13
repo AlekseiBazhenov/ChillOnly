@@ -6,22 +6,26 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import commonMain.kotlin.ru.chillonly.shared.network.response.Station
 import kotlinx.android.synthetic.main.player_layout.view.*
-import moxy.MvpDelegate
-import moxy.presenter.InjectPresenter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.chillonly.shared.GetStationsUseCase
 import ru.modernsoft.chillonly.R
+import ru.modernsoft.chillonly.business.events.EventSender
+import ru.modernsoft.chillonly.business.events.EventTypes
+import ru.modernsoft.chillonly.business.events.RxEventBus
 import ru.modernsoft.chillonly.business.services.RadioService
-import ru.modernsoft.chillonly.data.models.Station
-import ru.modernsoft.chillonly.ui.presenters.PlayerPresenterImpl
 import ru.modernsoft.chillonly.utils.ServiceUtils
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Action1
+import timber.log.Timber
+import java.util.*
 
 class ChillPlayer : CoordinatorLayout, ChillPlayerView {
-
-    private lateinit var mParentDelegate: MvpDelegate<Any>
-    private var mMvpDelegate: MvpDelegate<ChillPlayer>? = null
-
-    @InjectPresenter
-    lateinit var presenter: PlayerPresenterImpl
 
     private lateinit var playerBehavior: BottomSheetBehavior<View>
 
@@ -37,39 +41,17 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         initViews()
     }
 
-    fun init(parentDelegate: MvpDelegate<Any>) {
-        mParentDelegate = parentDelegate
-
-        getMvpDelegate().onCreate()
-        getMvpDelegate().onAttach()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        getMvpDelegate().onSaveInstanceState()
-        getMvpDelegate().onDetach()
-    }
-
-    private fun getMvpDelegate(): MvpDelegate<ChillPlayer> {
-        if (mMvpDelegate != null) {
-            return mMvpDelegate as MvpDelegate<ChillPlayer>
-        }
-
-        mMvpDelegate = MvpDelegate(this)
-        mMvpDelegate!!.setParentDelegate(mParentDelegate, id.toString())
-        return mMvpDelegate as MvpDelegate<ChillPlayer>
-    }
-
     private fun initViews() {
+        subscribeOnPlayerStates()
+
         inflate(context, R.layout.player_layout, this)
 
         playerBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet))
         playerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         player_layout.setOnClickListener { openDetails() }
-        control_button.setOnClickListener { presenter.onChangePlayerStateClick() }
-        add_to_fav.setOnClickListener { presenter.onAddFavoriteClick() }
+        control_button.setOnClickListener { changeState(station.id) }
+//        add_to_fav.setOnClickListener { presenter.onAddFavoriteClick() }
     }
 
     override fun changeState(stationId: Long) {
@@ -92,7 +74,7 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         playerBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         station_title.text = station.title
-        add_to_fav.isChecked = station.isFav
+//        add_to_fav.isChecked = station.isFav
         track_name.setText(R.string.connecting)
     }
 
@@ -120,4 +102,70 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
     private fun openDetails() {
         // DetailsActivity?
     }
+
+
+    ///
+    private lateinit var playerStatesSubscription: Subscription
+    private var playerStatesSubscriber: Action1<HashMap<String, Any>>? = null
+    private lateinit var station: Station
+
+    private fun subscribeOnPlayerStates() {
+        playerStatesSubscription = RxEventBus.INSTANCE.events
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(playerStatesSubscriber())
+    }
+
+    private fun playerStatesSubscriber(): Action1<HashMap<String, Any>> {
+        if (playerStatesSubscriber == null) {
+            playerStatesSubscriber = Action1 { data ->
+                val event = data[EventSender.EVENT_TYPE] as EventTypes
+                val value = data[EventSender.VALUE_IN_EVENT]
+                changePlayerView(event, value)
+            }
+        }
+        return playerStatesSubscriber as Action1<HashMap<String, Any>>
+    }
+
+    private fun changePlayerView(status: EventTypes, value: Any?) {
+        Timber.d(status.toString())
+        when (status) {
+            EventTypes.PLAYER_START -> {
+                val station: Station = value as Station
+                getStation(station.id)
+                startRadio(station.id)
+            }
+            EventTypes.PLAYER_CONNECTING -> {
+                showPlayer(station)
+            }
+            EventTypes.PLAYER_BUFFERING -> {
+                showBuffering()
+            }
+            EventTypes.PLAYER_ERROR -> {
+                showPlayerError()
+            }
+            EventTypes.PLAYER_STOP -> {
+                showStop()
+            }
+            EventTypes.TRACK_CHANGED -> {
+                val track = value as String
+                showTrack(track)
+            }
+            EventTypes.PLAYER_PREPARED -> {
+            }
+            EventTypes.START_TRACK_UPDATER -> {
+            }
+        }
+    }
+
+    private fun getStation(id: Long) {
+        GlobalScope.apply {
+            launch(Dispatchers.Default) {
+                val s = GetStationsUseCase.CaseProvider.getCase().getStationById(id)
+                withContext(Dispatchers.Main){
+                    station = s
+                }
+            }
+        }
+    }
+
 }

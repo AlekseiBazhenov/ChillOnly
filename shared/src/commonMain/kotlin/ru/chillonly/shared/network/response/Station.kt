@@ -1,4 +1,4 @@
-package ru.chillonly.shared
+package commonMain.kotlin.ru.chillonly.shared.network.response
 
 import kotlinx.serialization.Serializable
 
