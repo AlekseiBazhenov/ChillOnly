@@ -1,25 +1,23 @@
 package ru.modernsoft.chillonly.business.player
 
-import android.app.Service
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import java.io.IOException
 
-class ChillMediaPlayer private constructor (private val context: Service) // todo inject Context
+class ChillMediaPlayer private constructor ()
     : MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnBufferingUpdateListener {
 
     companion object {
 
         private var INSTANCE: ChillMediaPlayer? = null
 
-        fun get(context: Service): ChillMediaPlayer {
+        fun get(): ChillMediaPlayer {
             if (INSTANCE == null) {
-                INSTANCE = ChillMediaPlayer(context)
+                INSTANCE = ChillMediaPlayer()
             }
             return INSTANCE as ChillMediaPlayer
         }
@@ -91,6 +89,7 @@ class ChillMediaPlayer private constructor (private val context: Service) // tod
             mediaPlayer.prepare()
             updateUI(EventTypes.PLAYER_BUFFERING)
         } catch (e: IllegalStateException) {
+            // TODO: 05.10.2020 log crashlytics custom error
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()

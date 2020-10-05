@@ -8,14 +8,12 @@ class StationsRepositoryImpl : StationsRepository {
 
     private val api = ApiService.getApi()
 
-    private var stations: List<Station> = arrayListOf()
-
     override suspend fun getStations(): List<StationResponse> {
         return api.getStations()
     }
 
     override fun getStationById(id: Long): Station {
-        return stations[0]
+        return Station()
 //        return db.where(Station::class.java)
 //                .equalTo(DbFields.ID, id)
 //                .findAll()

@@ -2,7 +2,6 @@ package ru.modernsoft.chillonly.data.repositories
 
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.data.network.response.StationResponse
-import rx.Observable
 
 interface StationsRepository {
     suspend fun getStations(): List<StationResponse>

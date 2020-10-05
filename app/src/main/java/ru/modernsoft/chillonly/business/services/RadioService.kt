@@ -32,7 +32,7 @@ class RadioService : Service() {
 
         trackUpdater = TrackUpdater.get()
         chillNotification = ChillNotification(this)
-        mediaPlayer = ChillMediaPlayer.get(this)
+        mediaPlayer = ChillMediaPlayer.get()
         mediaPlayer.initMediaPlayer()
 
         subscribeOnUpdateTrack()
