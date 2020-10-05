@@ -39,7 +39,8 @@ class StationsTabFragment : MvpAppCompatFragment(), StationsFragmentView {
         presenter.onViewStarted(pageNumber)
     }
 
-    override fun showStations(list: OrderedRealmCollection<Station>) {
+//    override fun showStations(list: OrderedRealmCollection<Station>) {
+    override fun showStations(list: List<Station>) {
         station_list.layoutManager =
             if (ViewUtils.orientation(activity) == Configuration.ORIENTATION_PORTRAIT)
                 LinearLayoutManager(activity)

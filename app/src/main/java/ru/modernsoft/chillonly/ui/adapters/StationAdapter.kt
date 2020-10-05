@@ -1,24 +1,21 @@
 package ru.modernsoft.chillonly.ui.adapters
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import io.realm.OrderedRealmCollection
-import io.realm.RealmRecyclerViewAdapter
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_station.view.*
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.data.models.Station
-import com.bumptech.glide.request.RequestOptions
 
 
-
-class StationAdapter(private val stations: OrderedRealmCollection<Station>)
-    : RealmRecyclerViewAdapter<Station, StationAdapter.ViewHolder>(stations, true) {
+class StationAdapter(private val stations: List<Station>)
+    : RecyclerView.Adapter<StationAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return stations.size
@@ -28,12 +25,12 @@ class StationAdapter(private val stations: OrderedRealmCollection<Station>)
         return stations[position].id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_station, parent, false)
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: StationAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(stations[position])
     }
 
@@ -42,7 +39,7 @@ class StationAdapter(private val stations: OrderedRealmCollection<Station>)
         fun bindView(station: Station) {
             with(station) {
                 itemView.name.text = title
-                itemView.location.text = location
+                itemView.location.text = description
                 itemView.station_layout.setOnClickListener { EventSender().send(EventTypes.PLAYER_START, id) }
 
                 val requestOptions = RequestOptions()

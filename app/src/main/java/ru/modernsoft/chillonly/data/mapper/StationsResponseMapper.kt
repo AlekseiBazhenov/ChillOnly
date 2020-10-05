@@ -15,12 +15,9 @@ class StationResponseMapper : Func1<List<StationResponse>, List<Station>> {
                     station.description = stationResponse.description
                     station.playerUrl = stationResponse.playerUrl
                     station.stationUrl = stationResponse.stationUrl
-                    station.location = stationResponse.location
                     station.image = stationResponse.image
-                    station.genres = stationResponse.genres
-                    station.recommended = stationResponse.recommended
-                    station.location = stationResponse.location
-                    station.boughtPlace = stationResponse.bought_place
+                    station.created = stationResponse.created
+                    station.updated = stationResponse.updated
                     station
                 }
                 .toList()

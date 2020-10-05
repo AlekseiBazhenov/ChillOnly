@@ -1,12 +1,13 @@
 package ru.modernsoft.chillonly.data.repositories
 
 import ru.modernsoft.chillonly.data.models.Station
+import ru.modernsoft.chillonly.data.network.response.StationResponse
 import rx.Observable
 
 interface StationsRepository {
-    fun getStations(): Observable<List<Station>>
+    suspend fun getStations(): List<StationResponse>
     fun getStationById(id: Long): Station?
-    fun saveToCache(stations: List<Station>)
-    fun addStationToFavorites(station: Station)
+//    fun saveToCache(stations: List<Station>)
+//    fun addStationToFavorites(station: Station)
 }
 

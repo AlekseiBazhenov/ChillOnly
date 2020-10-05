@@ -1,12 +1,10 @@
 package ru.modernsoft.chillonly.ui.views
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.inputmethod.InputMethodManager
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter

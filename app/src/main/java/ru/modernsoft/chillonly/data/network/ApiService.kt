@@ -3,7 +3,6 @@ package ru.modernsoft.chillonly.data.network
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.modernsoft.chillonly.BuildConfig
 
@@ -33,7 +32,6 @@ object ApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .client(client)
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

@@ -1,7 +1,5 @@
 package ru.modernsoft.chillonly.ui.presenters
 
-import moxy.InjectViewState
-import moxy.MvpPresenter
 import ru.modernsoft.chillonly.business.events.EventSender
 import ru.modernsoft.chillonly.business.events.EventTypes
 import ru.modernsoft.chillonly.business.events.RxEventBus
@@ -10,15 +8,13 @@ import ru.modernsoft.chillonly.business.use_cases.AddStationToFavoritesUseCaseIm
 import ru.modernsoft.chillonly.business.use_cases.GetStationByIdUseCase
 import ru.modernsoft.chillonly.business.use_cases.GetStationByIdUseCaseImpl
 import ru.modernsoft.chillonly.data.models.Station
-import ru.modernsoft.chillonly.ui.views.ChillPlayerView
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Action1
 import timber.log.Timber
 import java.util.*
 
-@InjectViewState
-class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
+class PlayerPresenterImpl : PlayerPresenter {
 
     private var getStationUseCase: GetStationByIdUseCase = GetStationByIdUseCaseImpl()
     private var addToFavoritesUseCase: AddStationToFavoritesUseCase = AddStationToFavoritesUseCaseImpl()
@@ -28,22 +24,22 @@ class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
 
     private lateinit var station: Station
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        subscribeOnPlayerStates()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        playerStatesSubscription.unsubscribe()
-    }
+//    override fun onFirstViewAttach() {
+//        super.onFirstViewAttach()
+//        subscribeOnPlayerStates()
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        playerStatesSubscription.unsubscribe()
+//    }
 
     override fun onAddFavoriteClick() {
         addToFavoritesUseCase.addToFavorite(station)
     }
 
     override fun onChangePlayerStateClick() {
-        viewState.changeState(station.id)
+//        viewState.changeState(station.id)
     }
 
     private fun subscribeOnPlayerStates() {
@@ -63,29 +59,30 @@ class PlayerPresenterImpl : PlayerPresenter, MvpPresenter<ChillPlayerView>() {
         return playerStatesSubscriber as Action1<HashMap<String, Any>>
     }
 
+    // TODO: 05.10.2020 перенести в MainActivity
     private fun changePlayerView(status: EventTypes, value: Any?) {
         Timber.d(status.toString())
         when (status) {
             EventTypes.PLAYER_START -> {
                 val stationId: Long = value as Long
                 getStation(stationId)
-                viewState.startRadio(stationId)
+//                viewState.startRadio(stationId)
             }
             EventTypes.PLAYER_CONNECTING -> {
-                viewState.showPlayer(station)
+//                viewState.showPlayer(station)
             }
             EventTypes.PLAYER_BUFFERING -> {
-                viewState.showBuffering()
+//                viewState.showBuffering()
             }
             EventTypes.PLAYER_ERROR -> {
-                viewState.showPlayerError()
+//                viewState.showPlayerError()
             }
             EventTypes.PLAYER_STOP -> {
-                viewState.showStop()
+//                viewState.showStop()
             }
             EventTypes.TRACK_CHANGED -> {
                 val track = value as String
-                viewState.showTrack(track)
+//                viewState.showTrack(track)
             }
             EventTypes.PLAYER_PREPARED -> {
             }

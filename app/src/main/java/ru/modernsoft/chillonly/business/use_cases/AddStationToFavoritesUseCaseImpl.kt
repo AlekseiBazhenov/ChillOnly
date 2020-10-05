@@ -8,6 +8,6 @@ class AddStationToFavoritesUseCaseImpl : AddStationToFavoritesUseCase {
     private val repo = StationsRepositoryImpl()
 
     override fun addToFavorite(station: Station) {
-        repo.addStationToFavorites(station)
+//        repo.addStationToFavorites(station)
     }
 }

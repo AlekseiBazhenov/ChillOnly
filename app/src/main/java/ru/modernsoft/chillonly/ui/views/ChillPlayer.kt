@@ -7,21 +7,17 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.player_layout.view.*
-import moxy.MvpDelegate
-import moxy.presenter.InjectPresenter
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.business.services.RadioService
 import ru.modernsoft.chillonly.data.models.Station
-import ru.modernsoft.chillonly.ui.presenters.PlayerPresenterImpl
 import ru.modernsoft.chillonly.utils.ServiceUtils
 
+// TODO: 05.10.2020 управление плеером сделать из MainActivity
 class ChillPlayer : CoordinatorLayout, ChillPlayerView {
 
-    private lateinit var mParentDelegate: MvpDelegate<Any>
-    private var mMvpDelegate: MvpDelegate<ChillPlayer>? = null
+//    lateinit var presenter: PlayerPresenterImpl
 
-    @InjectPresenter
-    lateinit var presenter: PlayerPresenterImpl
+    private lateinit var listener: ChillPlayerView.PlayerListener
 
     private lateinit var playerBehavior: BottomSheetBehavior<View>
 
@@ -37,30 +33,6 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         initViews()
     }
 
-    fun init(parentDelegate: MvpDelegate<Any>) {
-        mParentDelegate = parentDelegate
-
-        getMvpDelegate().onCreate()
-        getMvpDelegate().onAttach()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        getMvpDelegate().onSaveInstanceState()
-        getMvpDelegate().onDetach()
-    }
-
-    private fun getMvpDelegate(): MvpDelegate<ChillPlayer> {
-        if (mMvpDelegate != null) {
-            return mMvpDelegate as MvpDelegate<ChillPlayer>
-        }
-
-        mMvpDelegate = MvpDelegate(this)
-        mMvpDelegate!!.setParentDelegate(mParentDelegate, id.toString())
-        return mMvpDelegate as MvpDelegate<ChillPlayer>
-    }
-
     private fun initViews() {
         inflate(context, R.layout.player_layout, this)
 
@@ -68,8 +40,8 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         playerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         player_layout.setOnClickListener { openDetails() }
-        control_button.setOnClickListener { presenter.onChangePlayerStateClick() }
-        add_to_fav.setOnClickListener { presenter.onAddFavoriteClick() }
+        control_button.setOnClickListener { listener.onChangePlayerStateClick() }
+        add_to_fav.setOnClickListener { listener.onAddFavoriteClick() }
     }
 
     override fun changeState(stationId: Long) {
@@ -78,6 +50,10 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         } else {
             RadioService.start(context, stationId)
         }
+    }
+
+    fun setListener(listener: ChillPlayerView.PlayerListener) {
+        this.listener = listener
     }
 
     override fun startRadio(stationId: Long) {
@@ -92,7 +68,7 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         playerBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         station_title.text = station.title
-        add_to_fav.isChecked = station.isFav
+//        add_to_fav.isChecked = station.isFav
         track_name.setText(R.string.connecting)
     }
 

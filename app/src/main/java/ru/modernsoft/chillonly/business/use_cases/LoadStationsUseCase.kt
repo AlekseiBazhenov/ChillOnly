@@ -5,5 +5,5 @@ import rx.Observable
 
 interface LoadStationsUseCase {
 
-    fun loadStations(): Observable<List<Station>>
+    suspend fun loadStations(): List<Station>
 }
