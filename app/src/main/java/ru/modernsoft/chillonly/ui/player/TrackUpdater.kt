@@ -3,7 +3,6 @@ package ru.modernsoft.chillonly.ui.player
 import android.content.Context
 import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import ru.modernsoft.chillonly.business.events.PlayerEvent
 import ru.modernsoft.chillonly.business.events.UpdaterEvent
 import ru.modernsoft.chillonly.ui.RadioService
 import timber.log.Timber
@@ -14,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-class TrackUpdater private constructor() {
+class TrackUpdater private constructor() { // TODO: callback, delete android dependencies
 
     private val service: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
     private var future: ScheduledFuture<*>? = null

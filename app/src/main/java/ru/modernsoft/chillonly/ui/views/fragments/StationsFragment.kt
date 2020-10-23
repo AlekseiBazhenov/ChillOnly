@@ -10,16 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_stations.*
-import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.data.Resource
 import ru.modernsoft.chillonly.data.Status
 import ru.modernsoft.chillonly.data.models.Station
+import ru.modernsoft.chillonly.databinding.FragmentStationsBinding
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 import ru.modernsoft.chillonly.ui.viewmodels.StationsViewModel
 import ru.modernsoft.chillonly.utils.ViewUtils
 
 class StationsFragment : Fragment(), StationsFragmentView {
+
+    private var _binding: FragmentStationsBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: StationsViewModel by viewModels()
 
@@ -30,7 +32,8 @@ class StationsFragment : Fragment(), StationsFragmentView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_stations, container, false)
+        _binding = FragmentStationsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,30 +42,35 @@ class StationsFragment : Fragment(), StationsFragmentView {
         viewModel.getStations().observe(viewLifecycleOwner, dataObserver)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private val dataObserver = Observer<Resource<List<Station>>> {
         when (it.status) {
             Status.LOADING -> {
-                progress.visibility = View.VISIBLE
+                binding.progress.visibility = View.VISIBLE
             }
             Status.SUCCESS -> {
-                progress.visibility = View.GONE
+                binding.progress.visibility = View.GONE
                 showStations(it.data!!)
             }
             Status.ERROR -> {
-                progress.visibility = View.GONE
+                binding.progress.visibility = View.GONE
             }
         }
     }
 
     override fun showStations(list: List<Station>) {
-        station_list.layoutManager =
+        binding.stationsList.layoutManager =
             if (ViewUtils.orientation(activity) == Configuration.ORIENTATION_PORTRAIT)
                 LinearLayoutManager(activity)
             else
                 GridLayoutManager(activity, 2)
 
         adapter = StationAdapter(list)
-        station_list.adapter = adapter
+        binding.stationsList.adapter = adapter
     }
 
     companion object {

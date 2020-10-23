@@ -10,11 +10,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar_tabs.*
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.business.events.PlayerEvent
 import ru.modernsoft.chillonly.data.models.Station
+import ru.modernsoft.chillonly.databinding.ActivityMainBinding
 import ru.modernsoft.chillonly.ui.RadioService
 import ru.modernsoft.chillonly.ui.player.ChillPlayer
 import ru.modernsoft.chillonly.ui.views.fragments.StationsFragment
@@ -29,15 +28,20 @@ class MainActivity : AppCompatActivity() {
         const val PLAYER_VALUE = "PLAYER_VALUE"
     }
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+//        setSupportActionBar(toolbar)
 
         setupBroadcastReceivers()
 
-        playerView.setListener(object : ChillPlayer.PlayerListener {
+        binding.playerView.setListener(object : ChillPlayer.PlayerListener {
             override fun onAddFavoriteClick() {
 //                presenter.onAddFavoriteClick
             }
@@ -123,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         when (status) {
             PlayerEvent.PLAYER_START -> {
                 value?.let {
-                    playerView.setStation(value)
+                    binding.playerView.setStation(value)
 
                     if (isPlaying()) {
                         RadioService.stop(this)
@@ -132,16 +136,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             PlayerEvent.PLAYER_CONNECTING -> {
-                playerView.showPlayer()
+                binding.playerView.showPlayer()
             }
             PlayerEvent.PLAYER_BUFFERING -> {
-                playerView.showBuffering()
+                binding.playerView.showBuffering()
             }
             PlayerEvent.PLAYER_ERROR -> {
-                playerView.showPlayerError()
+                binding.playerView.showPlayerError()
             }
             PlayerEvent.PLAYER_STOP -> {
-                playerView.showStop()
+                binding.playerView.showStop()
             }
             else -> {}
         }
@@ -155,7 +159,7 @@ class MainActivity : AppCompatActivity() {
             }
             track?.let {
                 Timber.d(it)
-                playerView.showTrack(it)
+                binding.playerView.showTrack(it)
             }
         }
     }

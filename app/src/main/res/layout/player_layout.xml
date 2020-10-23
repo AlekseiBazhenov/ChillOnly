@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_sheet"
+    android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,7 +10,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
-        android:id="@+id/player_layout"
+        android:id="@+id/playerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -38,7 +38,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/station_title"
+                android:id="@+id/stationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text"
@@ -46,7 +46,7 @@
                 tools:text="Station title" />
 
             <TextView
-                android:id="@+id/track_name"
+                android:id="@+id/trackName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Track" />
@@ -55,13 +55,13 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/control_button"
+        android:id="@+id/controlButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/horizontal_elements_margin"
         android:src="@mipmap/ic_play_arrow_black_48dp"
         app:backgroundTint="@color/colorAccent"
-        app:layout_anchor="@+id/player_layout"
+        app:layout_anchor="@+id/playerLayout"
         app:layout_anchorGravity="top|right|end"
         android:contentDescription="@string/control_button_description" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

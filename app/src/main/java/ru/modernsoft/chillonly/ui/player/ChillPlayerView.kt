@@ -2,15 +2,18 @@ package ru.modernsoft.chillonly.ui.player
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.player_layout.view.*
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.data.models.Station
+import ru.modernsoft.chillonly.databinding.PlayerLayoutBinding
 
 class ChillPlayerView : CoordinatorLayout, ChillPlayer {
+
+    private lateinit var binding: PlayerLayoutBinding
 
     private lateinit var station: Station
 
@@ -31,13 +34,13 @@ class ChillPlayerView : CoordinatorLayout, ChillPlayer {
     }
 
     private fun initViews() {
-        inflate(context, R.layout.player_layout, this)
+        binding = PlayerLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-        playerBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet))
+        playerBehavior = BottomSheetBehavior.from(binding.bottomSheet)
         playerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        player_layout.setOnClickListener { openDetails() }
-        control_button.setOnClickListener { listener.onPlayerControlClick(station) }
+        binding.playerLayout.setOnClickListener { openDetails() }
+        binding.controlButton.setOnClickListener { listener.onPlayerControlClick(station) }
 //        add_to_fav.setOnClickListener { listener.onAddFavoriteClick() }
     }
 
@@ -50,29 +53,39 @@ class ChillPlayerView : CoordinatorLayout, ChillPlayer {
     }
 
     override fun showPlayer() {
-        control_button.show()
+        binding.controlButton.show()
         playerBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-        station_title.text = station.title
+        binding.stationTitle.text = station.title
 //        add_to_fav.isChecked = station.isFav
-        track_name.setText(R.string.connecting)
+        binding.trackName.setText(R.string.connecting)
     }
 
     override fun showBuffering() {
-        control_button.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_pause_black_48dp))
-        track_name.setText(R.string.buffering)
+        binding.controlButton.setImageDrawable(
+            ContextCompat.getDrawable(
+                context,
+                R.mipmap.ic_pause_black_48dp
+            )
+        )
+        binding.trackName.setText(R.string.buffering)
     }
 
     override fun showPlayerError() {
-        track_name.setText(R.string.connection_error)
+        binding.trackName.setText(R.string.connection_error)
     }
 
     override fun showStop() {
-        control_button.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_play_arrow_black_48dp))
+        binding.controlButton.setImageDrawable(
+            ContextCompat.getDrawable(
+                context,
+                R.mipmap.ic_play_arrow_black_48dp
+            )
+        )
     }
 
     override fun showTrack(track: String) {
-        track_name.text = track
+        binding.trackName.text = track
     }
 
     private fun openDetails() {
