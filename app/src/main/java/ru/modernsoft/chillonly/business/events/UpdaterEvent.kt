@@ -1,6 +1,6 @@
 package ru.modernsoft.chillonly.business.events
 
-enum class EventTypes {
+enum class PlayerEvent {
 
     PLAYER_START,
     PLAYER_BUFFERING,
@@ -8,8 +8,6 @@ enum class EventTypes {
     PLAYER_CONNECTING,
     PLAYER_STOP,
     PLAYER_PREPARED,
-
-    START_TRACK_UPDATER,
 
     TRACK_CHANGED
 }

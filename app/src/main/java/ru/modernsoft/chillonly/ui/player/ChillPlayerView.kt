@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.player_layout.view.*
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.business.services.RadioService
+import ru.modernsoft.chillonly.ui.RadioService
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.utils.ServiceUtils
 
@@ -44,11 +44,13 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         add_to_fav.setOnClickListener { listener.onAddFavoriteClick() }
     }
 
-    override fun changeState(stationId: Long) {
+//    override fun changeState(stationId: Long) {
+    override fun changeState(station: Station) {
         if (isPlaying()) {
             RadioService.stop(context)
         } else {
-            RadioService.start(context, stationId)
+//            RadioService.start(context, stationId)
+            RadioService.start(context, station)
         }
     }
 
@@ -56,11 +58,13 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         this.listener = listener
     }
 
-    override fun startRadio(stationId: Long) {
+//    override fun startRadio(stationId: Long) {
+    override fun startRadio(station: Station) {
         if (isPlaying()) {
             RadioService.stop(context)
         }
-        RadioService.start(context, stationId)
+//        RadioService.start(context, stationId)
+        RadioService.start(context, station)
     }
 
     override fun showPlayer(station: Station) {

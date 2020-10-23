@@ -36,22 +36,22 @@ class StationsFragment : Fragment(), StationsFragmentView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dataObserver = Observer<Resource<List<Station>>> {
-            when (it.status) {
-                Status.LOADING -> {
-                    progress.visibility = View.VISIBLE
-                }
-                Status.SUCCESS -> {
-                    progress.visibility = View.GONE
-                    showStations(it.data!!)
-                }
-                Status.ERROR -> {
-                    progress.visibility = View.GONE
-                }
+        viewModel.getStations().observe(viewLifecycleOwner, dataObserver)
+    }
+
+    private val dataObserver = Observer<Resource<List<Station>>> {
+        when (it.status) {
+            Status.LOADING -> {
+                progress.visibility = View.VISIBLE
+            }
+            Status.SUCCESS -> {
+                progress.visibility = View.GONE
+                showStations(it.data!!)
+            }
+            Status.ERROR -> {
+                progress.visibility = View.GONE
             }
         }
-
-        viewModel.getStations().observe(viewLifecycleOwner, dataObserver)
     }
 
     override fun showStations(list: List<Station>) {

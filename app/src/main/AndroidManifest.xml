@@ -44,7 +44,7 @@
             android:windowSoftInputMode="stateVisible" />
 
         <service
-            android:name=".business.services.RadioService"
+            android:name=".ui.RadioService"
             android:enabled="true"
             android:exported="false" />
 

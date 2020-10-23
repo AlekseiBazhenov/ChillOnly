@@ -6,7 +6,7 @@ import timber.log.Timber.DebugTree
 
 class ChillApp : Application() {
 
-    // todo Dagger(Hilt, Koin), tests, ProGuard
+    // todo DI(Hilt, Koin), tests, ProGuard
 
     override fun onCreate() {
         super.onCreate()

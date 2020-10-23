@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
-import rx.Observer
 
 class SearchActivity : AppCompatActivity() { // TODO: presenter
 
@@ -19,15 +18,15 @@ class SearchActivity : AppCompatActivity() { // TODO: presenter
 
     private var searchAdapter: StationAdapter? = null
 
-    private val searchObserver = object : Observer<List<Station>> {
-        override fun onCompleted() {}
-
-        override fun onError(e: Throwable) {}
-
-        override fun onNext(searchResults: List<Station>) {
-//            searchAdapter!!.update(ArrayList(searchResults))
-        }
-    }
+//    private val searchObserver = object : Observer<List<Station>> {
+//        override fun onCompleted() {}
+//
+//        override fun onError(e: Throwable) {}
+//
+//        override fun onNext(searchResults: List<Station>) {
+////            searchAdapter!!.update(ArrayList(searchResults))
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

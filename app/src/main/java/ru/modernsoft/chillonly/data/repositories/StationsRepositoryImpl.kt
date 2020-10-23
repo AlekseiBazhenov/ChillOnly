@@ -1,6 +1,5 @@
 package ru.modernsoft.chillonly.data.repositories
 
-import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.data.network.ApiService
 import ru.modernsoft.chillonly.data.network.response.StationResponse
 
@@ -10,14 +9,6 @@ class StationsRepositoryImpl : StationsRepository {
 
     override suspend fun getStations(): List<StationResponse> {
         return api.getStations()
-    }
-
-    override fun getStationById(id: Long): Station {
-        return Station()
-//        return db.where(Station::class.java)
-//                .equalTo(DbFields.ID, id)
-//                .findAll()
-//                .first()!!
     }
 
 //    override fun saveToCache(stations: List<Station>) {

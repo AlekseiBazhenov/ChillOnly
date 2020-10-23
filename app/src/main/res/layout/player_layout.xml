@@ -22,15 +22,15 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="8dp">
 
-        <CheckBox
-            android:id="@+id/add_to_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:button="@drawable/fav_checkbox"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:paddingRight="16dp" />
+<!--        <CheckBox-->
+<!--            android:id="@+id/add_to_fav"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:button="@drawable/fav_checkbox"-->
+<!--            android:focusable="false"-->
+<!--            android:focusableInTouchMode="false"-->
+<!--            android:paddingEnd="16dp" />-->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,10 +58,10 @@
         android:id="@+id/control_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/horizontal_elements_margin"
-        android:clickable="true"
+        android:layout_marginEnd="@dimen/horizontal_elements_margin"
         android:src="@mipmap/ic_play_arrow_black_48dp"
         app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@+id/player_layout"
-        app:layout_anchorGravity="top|right|end" />
+        app:layout_anchorGravity="top|right|end"
+        android:contentDescription="@string/control_button_description" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
