@@ -1,23 +1,26 @@
-package ru.modernsoft.chillonly.business.player
+package ru.modernsoft.chillonly.ui.player
 
+import android.content.Context
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
-import ru.modernsoft.chillonly.business.events.EventSender
-import ru.modernsoft.chillonly.business.events.EventTypes
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import ru.modernsoft.chillonly.business.events.PlayerEvent
+import ru.modernsoft.chillonly.ui.views.MainActivity
 import java.io.IOException
 
-class ChillMediaPlayer private constructor ()
+class ChillMediaPlayer private constructor(private val context: Context)
     : MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnBufferingUpdateListener {
 
     companion object {
 
         private var INSTANCE: ChillMediaPlayer? = null
 
-        fun get(): ChillMediaPlayer {
+        fun get(context: Context): ChillMediaPlayer {
             if (INSTANCE == null) {
-                INSTANCE = ChillMediaPlayer()
+                INSTANCE = ChillMediaPlayer(context)
             }
             return INSTANCE as ChillMediaPlayer
         }
@@ -26,13 +29,13 @@ class ChillMediaPlayer private constructor ()
     private lateinit var mediaPlayer: MediaPlayer
 
     override fun onPrepared(mp: MediaPlayer) {
-        updateUI(EventTypes.START_TRACK_UPDATER)
+        sendPlayerEvent(PlayerEvent.PLAYER_PREPARED)
         mp.start()
     }
 
     override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
         mp.reset()
-        updateUI(EventTypes.PLAYER_ERROR)
+        sendPlayerEvent(PlayerEvent.PLAYER_ERROR)
         return false
     }
 
@@ -71,7 +74,7 @@ class ChillMediaPlayer private constructor ()
 
     fun stopPlayerIfPlaying() {
         if (mediaPlayer.isPlaying) {
-            updateUI(EventTypes.PLAYER_STOP)
+            sendPlayerEvent(PlayerEvent.PLAYER_STOP)
             mediaPlayer.stop()
             mediaPlayer.reset()
         }
@@ -82,12 +85,12 @@ class ChillMediaPlayer private constructor ()
             throw IllegalArgumentException("startPlayer(url: String) Empty URL")
         }
 
-        updateUI(EventTypes.PLAYER_CONNECTING)
+        sendPlayerEvent(PlayerEvent.PLAYER_CONNECTING)
 
         try {
             mediaPlayer.setDataSource(url)
             mediaPlayer.prepare()
-            updateUI(EventTypes.PLAYER_BUFFERING)
+            sendPlayerEvent(PlayerEvent.PLAYER_BUFFERING)
         } catch (e: IllegalStateException) {
             // TODO: 05.10.2020 log crashlytics custom error
             e.printStackTrace()
@@ -96,7 +99,9 @@ class ChillMediaPlayer private constructor ()
         }
     }
 
-    private fun updateUI(eventType: EventTypes) {
-        EventSender().send(eventType)
+    private fun sendPlayerEvent(event: PlayerEvent) {
+        val intent = Intent(MainActivity.PLAYER_EVENTS_FILTER)
+        intent.putExtra(MainActivity.PLAYER_EVENT, event)
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 }

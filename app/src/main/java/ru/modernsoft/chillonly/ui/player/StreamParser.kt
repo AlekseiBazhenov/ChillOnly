@@ -1,4 +1,4 @@
-package ru.modernsoft.chillonly.business.player
+package ru.modernsoft.chillonly.ui.player
 
 import timber.log.Timber
 import java.io.IOException
@@ -99,8 +99,7 @@ internal class StreamParser {
         } catch (e: Exception) {
             Timber.e(e.message)
         } finally {
-            if (stream != null)
-                stream.close()
+            stream?.close()
         }
         return metadata
     }

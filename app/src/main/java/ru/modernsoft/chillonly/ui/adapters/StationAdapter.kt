@@ -11,7 +11,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_station.view.*
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.business.events.EventType
+import ru.modernsoft.chillonly.business.events.PlayerEvent
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.views.MainActivity
 
@@ -58,7 +58,7 @@ class StationAdapter(private val stations: List<Station>)
 
         private fun sendStartPlayerEvent(id: Station) {
             val intent = Intent(MainActivity.PLAYER_EVENTS_FILTER)
-            intent.putExtra(MainActivity.PLAYER_EVENT, EventType.PLAYER_START)
+            intent.putExtra(MainActivity.PLAYER_EVENT, PlayerEvent.PLAYER_START)
             intent.putExtra(MainActivity.PLAYER_VALUE, id)
             LocalBroadcastManager.getInstance(itemView.context).sendBroadcast(intent)
         }

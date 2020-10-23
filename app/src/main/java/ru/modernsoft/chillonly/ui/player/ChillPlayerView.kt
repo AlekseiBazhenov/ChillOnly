@@ -1,4 +1,4 @@
-package ru.modernsoft.chillonly.ui.views
+package ru.modernsoft.chillonly.ui.player
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,16 +8,13 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.player_layout.view.*
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.ui.RadioService
 import ru.modernsoft.chillonly.data.models.Station
-import ru.modernsoft.chillonly.utils.ServiceUtils
 
-// TODO: 05.10.2020 управление плеером сделать из MainActivity
-class ChillPlayer : CoordinatorLayout, ChillPlayerView {
+class ChillPlayerView : CoordinatorLayout, ChillPlayer {
 
-//    lateinit var presenter: PlayerPresenterImpl
+    private lateinit var station: Station
 
-    private lateinit var listener: ChillPlayerView.PlayerListener
+    private lateinit var listener: ChillPlayer.PlayerListener
 
     private lateinit var playerBehavior: BottomSheetBehavior<View>
 
@@ -40,34 +37,19 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
         playerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         player_layout.setOnClickListener { openDetails() }
-        control_button.setOnClickListener { listener.onChangePlayerStateClick() }
-        add_to_fav.setOnClickListener { listener.onAddFavoriteClick() }
+        control_button.setOnClickListener { listener.onPlayerControlClick(station) }
+//        add_to_fav.setOnClickListener { listener.onAddFavoriteClick() }
     }
 
-//    override fun changeState(stationId: Long) {
-    override fun changeState(station: Station) {
-        if (isPlaying()) {
-            RadioService.stop(context)
-        } else {
-//            RadioService.start(context, stationId)
-            RadioService.start(context, station)
-        }
-    }
-
-    fun setListener(listener: ChillPlayerView.PlayerListener) {
+    fun setListener(listener: ChillPlayer.PlayerListener) {
         this.listener = listener
     }
 
-//    override fun startRadio(stationId: Long) {
-    override fun startRadio(station: Station) {
-        if (isPlaying()) {
-            RadioService.stop(context)
-        }
-//        RadioService.start(context, stationId)
-        RadioService.start(context, station)
+    override fun setStation(station: Station) {
+        this.station = station
     }
 
-    override fun showPlayer(station: Station) {
+    override fun showPlayer() {
         control_button.show()
         playerBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
@@ -91,10 +73,6 @@ class ChillPlayer : CoordinatorLayout, ChillPlayerView {
 
     override fun showTrack(track: String) {
         track_name.text = track
-    }
-
-    private fun isPlaying(): Boolean {
-        return ServiceUtils.serviceIsRunning(context, RadioService::class.java)
     }
 
     private fun openDetails() {

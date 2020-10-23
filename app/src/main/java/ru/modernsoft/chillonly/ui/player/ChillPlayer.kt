@@ -1,20 +1,17 @@
-package ru.modernsoft.chillonly.ui.views
+package ru.modernsoft.chillonly.ui.player
 
 import ru.modernsoft.chillonly.data.models.Station
 
-interface ChillPlayerView {
-//    fun startRadio(stationId: Long)
-    fun startRadio(station: Station)
-    fun showPlayer(station: Station)
+interface ChillPlayer {
+    fun setStation(station: Station)
+    fun showPlayer()
     fun showBuffering()
     fun showPlayerError()
     fun showStop()
     fun showTrack(track: String)
-//    fun changeState(stationId: Long)
-    fun changeState(station: Station)
 
     interface PlayerListener {
-        fun onChangePlayerStateClick()
         fun onAddFavoriteClick()
+        fun onPlayerControlClick(station: Station)
     }
 }

@@ -1,7 +1,11 @@
-package ru.modernsoft.chillonly.business.player
+package ru.modernsoft.chillonly.ui.player
 
-import ru.modernsoft.chillonly.business.events.EventSender
-import ru.modernsoft.chillonly.business.events.EventTypes
+import android.content.Context
+import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import ru.modernsoft.chillonly.business.events.PlayerEvent
+import ru.modernsoft.chillonly.business.events.UpdaterEvent
+import ru.modernsoft.chillonly.ui.RadioService
 import timber.log.Timber
 import java.net.MalformedURLException
 import java.net.URL
@@ -17,6 +21,7 @@ class TrackUpdater private constructor() {
     private var trackTitle = ""
     private var currentUrl: String? = null
     private var previousUrl: String? = null
+    private var context: Context? = null
 
     companion object {
 
@@ -25,6 +30,10 @@ class TrackUpdater private constructor() {
         fun get(): TrackUpdater {
             return INSTANCE
         }
+    }
+
+    fun provideContext(context: Context) {
+        this.context = context
     }
 
     fun startTrackChecker(url: String) {
@@ -56,7 +65,14 @@ class TrackUpdater private constructor() {
         if (trackTitle != parsedTrack || previousUrl == currentUrl) {
             previousUrl = ""
             trackTitle = parsedTrack
-            EventSender().send(EventTypes.TRACK_CHANGED, parsedTrack)
+            sendTrackChangedEvent(parsedTrack)
         }
+    }
+
+    private fun sendTrackChangedEvent(parsedTrack: String) {
+        val intent = Intent(RadioService.TRACK_EVENTS_FILTER)
+        intent.putExtra(RadioService.TRACK_EVENT, UpdaterEvent.TRACK_CHANGED)
+        intent.putExtra(RadioService.TRACK_VALUE, parsedTrack)
+        context?.let { LocalBroadcastManager.getInstance(it).sendBroadcast(intent) }
     }
 }
