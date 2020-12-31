@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.modernsoft.chillonly.R
-import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 
 class SearchActivity : AppCompatActivity() { // TODO: presenter
@@ -57,7 +56,7 @@ class SearchActivity : AppCompatActivity() { // TODO: presenter
     }
 
     private fun setSearchAdapter() {
-        val layoutManager = LinearLayoutManager(this)
+//        val layoutManager = LinearLayoutManager(this)
 //        searchResults.layoutManager = layoutManager
 //        searchAdapter = StationAdapter(this, ArrayList<Station>(), object : StationAdapter.OnStationClick {
 //            override fun onStationClick(station: Station) {

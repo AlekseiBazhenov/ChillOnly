@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/all_atations"
+        android:icon="@drawable/ic_queue_music"
+        android:title="@string/all_radio_stations" />
+    <item
+        android:id="@+id/favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_heart_outline"
+        android:title="@string/favorite_stations" />
+<!--    <item-->
+<!--        android:id="@+id/page_3"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/ic_more"-->
+<!--        android:title="@string/more" />-->
+</menu>

@@ -11,7 +11,9 @@ interface ChillPlayer {
     fun showTrack(track: String)
 
     interface PlayerListener {
-        fun onAddFavoriteClick()
+        fun onAddFavoriteClick(station: Station)
         fun onPlayerControlClick(station: Station)
+        fun checkIsFavorite(station: Station)
+        fun onDeleteFromFavoriteClick(station: Station)
     }
 }

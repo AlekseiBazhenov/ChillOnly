@@ -11,14 +11,12 @@ class StationsViewModel : ViewModel() {
 
     private val useCase: LoadStationsUseCase = LoadStationsUseCaseImpl()
 
-//    val currentName: MutableLiveData<String> by lazy {
-//        MutableLiveData<String>()
-//    }
 
     fun getStations() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = useCase.loadStations()))
+            val data = useCase.loadStations()
+            emit(Resource.success(data = data))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }

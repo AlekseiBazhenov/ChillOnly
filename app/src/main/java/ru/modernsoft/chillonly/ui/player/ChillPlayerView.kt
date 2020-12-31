@@ -29,7 +29,11 @@ class ChillPlayerView : CoordinatorLayout, ChillPlayer {
         initViews()
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         initViews()
     }
 
@@ -41,7 +45,13 @@ class ChillPlayerView : CoordinatorLayout, ChillPlayer {
 
         binding.playerLayout.setOnClickListener { openDetails() }
         binding.controlButton.setOnClickListener { listener.onPlayerControlClick(station) }
-//        add_to_fav.setOnClickListener { listener.onAddFavoriteClick() }
+        binding.addToFav.setOnClickListener {
+            if (binding.addToFav.isChecked) {
+                listener.onAddFavoriteClick(station)
+            } else {
+                listener.onDeleteFromFavoriteClick(station)
+            }
+        }
     }
 
     fun setListener(listener: ChillPlayer.PlayerListener) {
@@ -57,8 +67,9 @@ class ChillPlayerView : CoordinatorLayout, ChillPlayer {
         playerBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         binding.stationTitle.text = station.title
-//        add_to_fav.isChecked = station.isFav
         binding.trackName.setText(R.string.connecting)
+
+        listener.checkIsFavorite(station)
     }
 
     override fun showBuffering() {
@@ -90,5 +101,9 @@ class ChillPlayerView : CoordinatorLayout, ChillPlayer {
 
     private fun openDetails() {
         // DetailsActivity?
+    }
+
+    fun setStationFavorite(isFavorite: Boolean) {
+        binding.addToFav.isChecked = isFavorite
     }
 }

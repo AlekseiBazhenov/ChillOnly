@@ -10,6 +10,7 @@
     <string name="all_radio_stations">All</string>
     <string name="recommended_stations">Recommended</string>
     <string name="favorite_stations">Favorites</string>
+    <string name="more">More</string>
     <string name="rate_us">Rate us</string>
     <string name="share">Share</string>
     <string name="search_hint">Search …</string>

@@ -38,7 +38,7 @@ class RadioService : Service() {
     private fun setupBroadcastReceivers() {
         LocalBroadcastManager.getInstance(this).registerReceiver(
             playerEventsReceiver,
-            IntentFilter(MainActivity.PLAYER_EVENTS_FILTER)
+            IntentFilter(MainActivity.PLAYER_EVENTS_ACTION)
         )
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -79,7 +79,8 @@ class RadioService : Service() {
                 PlayerEvent.PLAYER_PREPARED -> {
                     trackUpdater.startTrackChecker(playerUrl)
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
     }
@@ -98,7 +99,7 @@ class RadioService : Service() {
     }
 
     private fun getExtraStation(intent: Intent) =
-            intent.getSerializableExtra(EXTRA_STATION) as Station
+        intent.getSerializableExtra(EXTRA_STATION) as Station
 
     companion object {
 
