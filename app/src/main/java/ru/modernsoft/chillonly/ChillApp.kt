@@ -30,6 +30,8 @@ class ChillApp : Application() {
             Timber.plant(DebugTree())
         }
 
+        instance = this
+
         //        leakCanary();
     }
 
@@ -39,4 +41,10 @@ class ChillApp : Application() {
     //        }
     //        LeakCanary.install(this);
     //    }
+
+    companion object {
+        lateinit var instance: ChillApp
+            private set
+    }
+
 }

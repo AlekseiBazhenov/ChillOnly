@@ -14,8 +14,8 @@ import ru.modernsoft.chillonly.databinding.ItemStationBinding
 import ru.modernsoft.chillonly.ui.views.MainActivity
 
 
-class StationAdapter(private val stations: List<Station>)
-    : RecyclerView.Adapter<StationAdapter.ViewHolder>() {
+class StationAdapter(private val stations: List<Station>) :
+    RecyclerView.Adapter<StationAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return stations.size
@@ -26,7 +26,7 @@ class StationAdapter(private val stations: List<Station>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemStationBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemStationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -55,10 +55,10 @@ class StationAdapter(private val stations: List<Station>)
             }
         }
 
-        private fun sendStartPlayerEvent(id: Station) {
-            val intent = Intent(MainActivity.PLAYER_EVENTS_FILTER)
+        private fun sendStartPlayerEvent(station: Station) {
+            val intent = Intent(MainActivity.PLAYER_EVENTS_ACTION)
             intent.putExtra(MainActivity.PLAYER_EVENT, PlayerEvent.PLAYER_START)
-            intent.putExtra(MainActivity.PLAYER_VALUE, id)
+            intent.putExtra(MainActivity.PLAYER_VALUE, station)
             LocalBroadcastManager.getInstance(itemView.context).sendBroadcast(intent)
         }
     }

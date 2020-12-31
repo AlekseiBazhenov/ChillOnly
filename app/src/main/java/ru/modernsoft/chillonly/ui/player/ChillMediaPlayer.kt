@@ -11,8 +11,9 @@ import ru.modernsoft.chillonly.business.events.PlayerEvent
 import ru.modernsoft.chillonly.ui.views.MainActivity
 import java.io.IOException
 
-class ChillMediaPlayer private constructor(private val context: Context)
-    : MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnBufferingUpdateListener {
+class ChillMediaPlayer private constructor(private val context: Context) :
+    MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
+    MediaPlayer.OnBufferingUpdateListener {
 
     companion object {
 
@@ -60,6 +61,7 @@ class ChillMediaPlayer private constructor(private val context: Context)
                             .build()
                     )
                 } else {
+                    @Suppress("DEPRECATION")
                     setAudioStreamType(AudioManager.STREAM_MUSIC)
                 }
             }
@@ -100,7 +102,7 @@ class ChillMediaPlayer private constructor(private val context: Context)
     }
 
     private fun sendPlayerEvent(event: PlayerEvent) {
-        val intent = Intent(MainActivity.PLAYER_EVENTS_FILTER)
+        val intent = Intent(MainActivity.PLAYER_EVENTS_ACTION)
         intent.putExtra(MainActivity.PLAYER_EVENT, event)
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }

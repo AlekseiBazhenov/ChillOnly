@@ -9,6 +9,9 @@ class LoadStationsUseCaseImpl : LoadStationsUseCase {
     private val repo = StationsRepositoryImpl()
 
     override suspend fun loadStations(): List<Station> {
-        return repo.getStations().map(StationsResponseMapper().execute())
+        val response = repo.getStations()
+        val stations = response.map(StationsResponseMapper().execute())
+        repo.saveToCache(stations)
+        return stations
     }
 }

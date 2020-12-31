@@ -5,21 +5,20 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import ru.modernsoft.chillonly.R
 import ru.modernsoft.chillonly.ui.views.MainActivity
 
-class ChillNotification(private val context: Service) { //todo refactoring
+class ChillNotification(private val context: Service) {
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationBuilder: NotificationCompat.Builder
 
     fun createNotification(title: String) {
         val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(context, "ru.modernsoft.chillonly", "ChillOnly Service")
+            createNotificationChannel()
         } else {
             ""
         }
@@ -40,12 +39,15 @@ class ChillNotification(private val context: Service) { //todo refactoring
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(context: Service, channelId: String, channelName: String): String{
-        val chan = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
-        chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+    private fun createNotificationChannel(): String {
+        val channelId = "ru.modernsoft.chillonly"
+        val channelName = "ChillOnly Service"
+        val channel =
+            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
+        channel.lightColor = Color.BLUE
+        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val service = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(chan)
+        service.createNotificationChannel(channel)
         return channelId
     }
 
@@ -56,25 +58,5 @@ class ChillNotification(private val context: Service) { //todo refactoring
 
     private fun buildNotification(): Notification {
         return notificationBuilder.build()
-    }
-
-    fun createNotificationPush(messageBody: String?) {
-        val intent = Intent(context, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT)
-
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        notificationBuilder = NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(context.resources.getString(R.string.app_name))
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
-
-        notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
 }

@@ -104,15 +104,17 @@ internal class StreamParser {
         return metadata
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     private fun parsingMetadata(metaString: String): Map<String, String> {
         val metadata = HashMap<String, String>()
-        val metaParts = metaString.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$")
+        val metaParts =
+            metaString.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val p = Pattern.compile("^([a-zA-Z]+)='([^']*)'$")
         var m: Matcher
         for (metaPart in metaParts) {
             m = p.matcher(metaPart)
             if (m.find()) {
-                metadata.put(m.group(1), m.group(2))
+                metadata[m.group(1)] = m.group(2)
             }
         }
         return metadata
