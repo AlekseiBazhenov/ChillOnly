@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Dispatchers
+import ru.modernsoft.chillonly.business.use_cases.LoadStationsUseCase
 import ru.modernsoft.chillonly.data.Resource
 import ru.modernsoft.chillonly.data.Status
 import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.databinding.FragmentStationsBinding
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 import ru.modernsoft.chillonly.ui.viewmodels.StationsViewModel
+import ru.modernsoft.chillonly.ui.viewmodels.StationsViewModelFactory
 import ru.modernsoft.chillonly.utils.ViewUtils
 
 class StationsFragment : Fragment(), StationsFragmentView {
@@ -22,7 +25,13 @@ class StationsFragment : Fragment(), StationsFragmentView {
     private var _binding: FragmentStationsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: StationsViewModel by viewModels()
+    private val loadStationsUseCase = LoadStationsUseCase()
+
+    private val viewModel: StationsViewModel by viewModels {
+        StationsViewModelFactory(
+            loadStationsUseCase
+        )
+    }
 
     private lateinit var adapter: StationAdapter
 

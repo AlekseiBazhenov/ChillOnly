@@ -1,7 +1,14 @@
 package ru.modernsoft.chillonly.business.use_cases
 
 import ru.modernsoft.chillonly.data.models.Station
+import ru.modernsoft.chillonly.data.repositories.StationsRepositoryImpl
 
-interface DeleteStationFromFavoritesUseCase {
-    suspend fun deleteFromFavorites(station: Station): Int
+class DeleteStationFromFavoritesUseCase : UseCaseWithParams<Station, Int> {
+
+    private val repo = StationsRepositoryImpl()
+
+    override suspend fun doWork(params: Station): Int {
+        val favorite = repo.findById(params.id)
+        return repo.deleteStationFromFavorites(favorite)
+    }
 }

@@ -15,7 +15,6 @@ import ru.modernsoft.chillonly.data.models.Station
 import ru.modernsoft.chillonly.databinding.FragmentStationsBinding
 import ru.modernsoft.chillonly.ui.adapters.StationAdapter
 import ru.modernsoft.chillonly.ui.viewmodels.FavoritesViewModel
-import ru.modernsoft.chillonly.ui.viewmodels.StationsViewModel
 import ru.modernsoft.chillonly.utils.ViewUtils
 
 class FavoritesFragment : Fragment(), FavoritesFragmentView {

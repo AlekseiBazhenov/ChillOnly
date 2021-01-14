@@ -9,20 +9,14 @@ import ru.modernsoft.chillonly.data.models.Station
 
 class FavoritesViewModel : ViewModel() {
 
-    private val addStationToFavoritesUseCase: AddStationToFavoritesUseCase =
-        AddStationToFavoritesUseCaseImpl()
-
-    private val deleteStationFromFavoritesUseCase: DeleteStationFromFavoritesUseCase =
-        DeleteStationFromFavoritesUseCaseImpl()
-
-    private val getFavoritesUseCase: GetFavoritesUseCase = GetFavoritesUseCaseImpl()
-
-    private val checkStationIsFavoriteUseCase: CheckStationIsFavoriteUseCase =
-        CheckStationIsFavoriteUseCaseImpl()
+    private val addStationToFavoritesUseCase = AddStationToFavoritesUseCase()
+    private val deleteStationFromFavoritesUseCase = DeleteStationFromFavoritesUseCase()
+    private val getFavoritesUseCase = GetFavoritesUseCase()
+    private val checkStationIsFavoriteUseCase = CheckStationIsFavoriteUseCase()
 
     fun onAddToFavoritesClick(station: Station) = liveData(Dispatchers.IO) {
         try {
-            val data = addStationToFavoritesUseCase.addToFavorites(station)
+            val data = addStationToFavoritesUseCase.doWork(station)
             emit(Resource.success(data = data))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
@@ -31,7 +25,7 @@ class FavoritesViewModel : ViewModel() {
 
     fun onDeleteFromFavoritesClick(station: Station) = liveData(Dispatchers.IO) {
         try {
-            val data = deleteStationFromFavoritesUseCase.deleteFromFavorites(station)
+            val data = deleteStationFromFavoritesUseCase.doWork(station)
             emit(Resource.success(data = data))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
@@ -40,7 +34,7 @@ class FavoritesViewModel : ViewModel() {
 
     fun getFavorites() = liveData(Dispatchers.IO) {
         try {
-            val data = getFavoritesUseCase.getFavorites()
+            val data = getFavoritesUseCase.doWork()
             emit(Resource.success(data = data))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
@@ -49,7 +43,7 @@ class FavoritesViewModel : ViewModel() {
 
     fun checkIsFavorite(station: Station) = liveData(Dispatchers.IO) {
         try {
-            val data = checkStationIsFavoriteUseCase.isFavorite(station)
+            val data = checkStationIsFavoriteUseCase.doWork(station)
             emit(Resource.success(data = data))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "Ambient Radio",
+    "description": "Deeply Beautiful Chillout Music - A Heavenly World of Sound",
+    "player_url": "http://uk2.internet-radio.com:31491/",
+    "station_url": "http://AmbientRadio.org",
+    "image": "https://www.shareicon.net/data/128x128/2016/01/03/697479_music_512x512.png",
+    "created": "2020-09-01T06:40:00.004687Z",
+    "updated": "2020-09-01T06:40:00.004746Z"
+  },
+  {
+    "id": 2,
+    "title": "RADIO ESTILO LEBLON",
+    "description": "FIRST CLASS SOFT MUSIC",
+    "player_url": "http://us4.internet-radio.com:8193/stream",
+    "station_url": "http://www.radioestiloleblon.com",
+    "image": "https://www.shareicon.net/data/128x128/2016/01/03/697479_music_512x512.png",
+    "created": "2020-12-28T08:15:46.081548Z",
+    "updated": "2020-12-28T08:15:46.081592Z"
+  },
+  {
+    "id": 3,
+    "title": "Sax4Love",
+    "description": "100% Sax Musics",
+    "player_url": "http://sc-sax4ever.1.fm:10148",
+    "station_url": "http://sax4love.com/",
+    "image": "http://www.costadelmar-radio.com/Sax4Love/images/Logo-Sax4Love-200.gif",
+    "created": "2020-12-28T08:18:33.359705Z",
+    "updated": "2020-12-28T08:18:33.359737Z"
+  },
+  {
+    "id": 4,
+    "title": "Chilltrax",
+    "description": "Chilltrax is chillout music with integrity. Chilltrax sets a mood that takes the edge off whatever you're doing.",
+    "player_url": "http://server1.chilltrax.com:9000",
+    "station_url": "https://www.chilltrax.com/",
+    "image": "http://cdn-radiotime-logos.tunein.com/s122126q.png",
+    "created": "2020-12-28T08:19:11.135461Z",
+    "updated": "2020-12-28T08:19:11.135499Z"
+  }
+]
