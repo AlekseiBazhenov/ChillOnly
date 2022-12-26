@@ -9,7 +9,7 @@ class StationsViewModelFactory(
     private val useCase: LoadStationsUseCase
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return StationsViewModel(useCase) as T
     }
 }

@@ -2,12 +2,12 @@ package ru.modernsoft.chillonly
 
 import android.app.Application
 import android.os.StrictMode
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
+@HiltAndroidApp
 class ChillApp : Application() {
-
-    // todo DI(Hilt, Koin), tests, ProGuard
 
     override fun onCreate() {
         if (BuildConfig.DEBUG) {
